@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/blue"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/otstup">
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,8 +24,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/search"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/otstup"
             android:layout_weight="1"
             android:backgroundTint="@color/white"
             android:clickable="true"
@@ -33,7 +33,7 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size"
-            app:cornerRadius="16dp"
+            app:cornerRadius="@dimen/radius"
             app:icon="@drawable/search"
             app:iconGravity="textStart"
             app:iconTint="@color/black" />
@@ -41,15 +41,15 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mediateka"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/otstup"
             android:layout_weight="1"
             android:backgroundTint="@color/white"
             android:text="@string/mediatecа"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size"
-            app:cornerRadius="16dp"
+            app:cornerRadius="@dimen/radius"
             app:icon="@drawable/medic"
             app:iconGravity="textStart"
             app:iconTint="@color/black" />
@@ -57,14 +57,14 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settings"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@color/white"
             android:text="@string/settings"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size"
-            app:cornerRadius="16dp"
+            app:cornerRadius="@dimen/radius"
             app:icon="@drawable/settings"
             app:iconGravity="textStart"
             app:iconTint="@color/black" />

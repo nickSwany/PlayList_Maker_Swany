@@ -13,8 +13,7 @@ class SettingsActivity : AppCompatActivity() {
         val backButton = findViewById<Button>(R.id.back)
 
         backButton.setOnClickListener {
-            val backIntent = Intent (this, MainActivity::class.java)
-            startActivity(backIntent)
+            finish()
         }
     }
 }
