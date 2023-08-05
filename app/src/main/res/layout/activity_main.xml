@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/back_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/back_main"
     android:orientation="vertical"
     android:padding="@dimen/otstup_16">
 
@@ -35,13 +35,13 @@
             style="@style/main_button"
             android:layout_marginBottom="@dimen/otstup_16"
             android:text="@string/mediatecа"
-            app:icon="@drawable/medic"/>
+            app:icon="@drawable/medic" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settings"
             style="@style/main_button"
             android:text="@string/settings"
-            app:icon="@drawable/settings"/>
+            app:icon="@drawable/settings" />
 
     </LinearLayout>
 </LinearLayout>

@@ -20,7 +20,7 @@
         <item name="android:backgroundTint">@color/dark_theme</item>
     </style>
     <style name="back_main">
-        <item name="background">@color/dark_theme</item>
+        <item name="android:background">@color/dark_theme</item>
     </style>
     <style name="back_settings">
         <item name="android:background">@color/dark_theme</item>
