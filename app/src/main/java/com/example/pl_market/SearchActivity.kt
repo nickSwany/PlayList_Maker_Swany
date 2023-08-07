@@ -19,6 +19,7 @@ class SearchActivity : AppCompatActivity() {
         var searchQuery = ""
         const val SEARCH_STRING = "SEARCH_STRING"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
