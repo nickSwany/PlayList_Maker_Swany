@@ -15,7 +15,12 @@
         <item name="android:textColor">@color/white</item>
         <item name="iconTint">@color/white</item>
     </style>
-    <style name="dark_button">
+    <style name="back_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">@dimen/size_48</item>
+        <item name="android:layout_height">@dimen/size_48</item>
+        <item name="android:layout_marginStart">@dimen/size_4</item>
+        <item name="android:layout_marginTop">@dimen/size_4</item>
+        <item name="icon">@drawable/back</item>
         <item name="iconTint">@color/white</item>
         <item name="android:backgroundTint">@color/dark_theme</item>
     </style>
