@@ -7,5 +7,12 @@
     <string name="arrow_forward">Пользовательское соглашение</string>
     <string name="share">Поделиться приложением</string>
     <string name="black_theme">Темная тема</string>
-
+    <string name="back">Назад</string>
+    <string name="inform">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="thanks">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="sent">Отправить письмо через:</string>
+    <string name="share_uri">"Поделиться ссылкой через:"</string>
+    <string name="uri">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="cours_uri">https://practicum.yandex.ru/profile/android-developer/</string>
+    <string name="email">Thief.leroy@yandex.ru</string>
 </resources>
