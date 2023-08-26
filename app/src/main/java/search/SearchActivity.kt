@@ -1,4 +1,4 @@
-package com.example.pl_market
+package search
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +10,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pl_market.R
+import com.example.pl_market.Track
+import search.classes.TrackAdapter
 
 class SearchActivity : AppCompatActivity() {
 
@@ -23,6 +28,18 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        val trackAdapter = TrackAdapter(listOf(
+            Track("Smells like Tenn Spirit", "Nirvana", "5:01", getString(R.string.nirvana_art)),
+            Track("Billie Jean", "Michael Jackson", "4:35", getString(R.string.jackson_art)),
+            Track("Stayin' Alive", "Bee Gees", "4:10", getString(R.string.bee_art)),
+            Track("Whole Lotta Love", "Led Zeppelin", "5:33", getString(R.string.led_art)),
+            Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", getString(R.string.guns_art)),
+        ))
+
+        val rcViewHistory = findViewById<RecyclerView>(R.id.rcViewHistory)
+        rcViewHistory.adapter = trackAdapter
+        rcViewHistory.layoutManager = LinearLayoutManager(this)
 
         val back_button = findViewById<Button>(R.id.back)
         inputEditText = findViewById(R.id.search_edittext)
@@ -75,4 +92,7 @@ class SearchActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 }
+
+
+
 
