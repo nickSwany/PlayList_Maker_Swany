@@ -66,7 +66,7 @@
     <style name="dark_to_white">
         <item name="android:textColor">@color/black</item>
     </style>
-    <style name="mistake_ImageNotFound">
+    <style name="mistakeImageNotFound">
         <item name="android:src">@drawable/light_mode_smth_not_wrong</item>
     </style>
     <style name="mistakeImageNotInternet">

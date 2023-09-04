@@ -118,44 +118,7 @@ class SearchActivity : AppCompatActivity() {
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val searchText = inputEditText.text.toString()
-                if (inputEditText.text.isNotEmpty()) {
-                    apiService.searchTracks(searchText).enqueue(object : Callback<SearchResponse> {
-                        override fun onResponse(
-                            call: Call<SearchResponse>,
-                            response: Response<SearchResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                tracks.clear()
-                                if (response.body()?.results?.isNotEmpty() == true) {
-                                    tracks.addAll(response.body()?.results!!)
-                                    adapter.notifyDataSetChanged()
-                                    hideKeyboard()
-                                }
-                                if (tracks.isEmpty()) {
-                                    showMessage(getString(R.string.nothing_found), "")
-                                    hideKeyboard()
-                                } else {
-                                    showMessage("", "")
-                                    hideKeyboard()
-                                }
-                            } else {
-                                showError(
-                                    getString(R.string.trouble_with_internet),
-                                    response.code().toString()
-                                )
-                                hideKeyboard()
-                            }
-                        }
-
-                        override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                            showError(
-                                getString(R.string.trouble_with_internet),
-                                t.message.toString()
-                            )
-                        }
-                    })
-                }
+                restartButton()
                 true
             } else {
                 false
@@ -191,6 +154,7 @@ class SearchActivity : AppCompatActivity() {
                             getString(R.string.trouble_with_internet),
                             response.code().toString()
                         )
+
                         hideKeyboard()
                     }
                 }
@@ -211,6 +175,7 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
             adapter.notifyDataSetChanged()
             placeholderMessage.text = text
+            placeholderMessageNotFound.visibility = View.GONE
             if (additionalMessage.isNotEmpty()) {
                 Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
                     .show()
