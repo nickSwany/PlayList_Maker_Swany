@@ -32,7 +32,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/ys_display_medium"
             android:maxLines="1"
-            android:textColor="@color/black"
+            style="@style/dark_to_white"
             android:textSize="@dimen/text_size_small"
             tools:text="@string/track_name" />
 

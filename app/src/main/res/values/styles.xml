@@ -63,5 +63,14 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
     </style>
+    <style name="dark_to_white">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="mistake_ImageNotFound">
+        <item name="android:src">@drawable/light_mode_smth_not_wrong</item>
+    </style>
+    <style name="mistakeImageNotInternet">
+        <item name="android:src">@drawable/light_mode_no_internet</item>
+    </style>
 
 </resources>
