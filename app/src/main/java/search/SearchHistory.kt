@@ -20,16 +20,16 @@ class SearchHistory(sharedPreferences: SharedPreferences) {
 
     fun addTrack(trackHistory: Track) {
         var trackList = read().toMutableList()
-        trackList.removeIf { it.trackName == trackHistory.trackName }
+        trackList.removeIf { it.trackId == trackHistory.trackId}
         trackList.add(0, trackHistory)
-        if (trackList.size > MAX_HISTORY_TRACK) //{}
-            trackList = ArrayList(trackList.subList(MIN_HISTORY_TRACK, MAX_HISTORY_TRACK))
+        if (trackList.size > MAX_HISTORY_TRACK)
+            trackList = ArrayList(trackList.dropLast(1))
         val json = Gson().toJson(trackList)
         sharedPrefs.edit()
             .putString(HISTORY_KEY, json)
             .apply()
 
-        Log.d("SearchHistory", "Трек добавлен: ${trackHistory.trackName}")
+        Log.d("SearchHistory", "Трек добавлен: ${trackHistory.trackId}")
     }
 
     fun clearHistory() = sharedPrefs.edit().clear().apply()

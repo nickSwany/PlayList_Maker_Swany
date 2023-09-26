@@ -10,15 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pl_market.R
 import com.example.pl_market.Track
+import com.example.pl_market.databinding.ActivitySearchBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -29,7 +28,7 @@ import retrofit2.Response
 
 @Suppress("UNUSED_EXPRESSION")
 class SearchActivity : AppCompatActivity() {
-
+    private lateinit var binding: ActivitySearchBinding
     private lateinit var inputEditText: EditText
 
     companion object {
@@ -66,10 +65,8 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val clearButton = findViewById<ImageView>(R.id.clean)
-        val back_BT = findViewById<Button>(R.id.back)
-        val restartSearch_BT = findViewById<Button>(R.id.RestartSearch)
-        val cleanHistory_BT = findViewById<Button>(R.id.clean_history)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         inputEditText = findViewById(R.id.search_edittext)
         rcViewHistory = findViewById(R.id.rcViewHistory)
@@ -91,8 +88,6 @@ class SearchActivity : AppCompatActivity() {
 
         rcViewHistory.adapter = adapter
 
-        visibleHistory()
-
         searchHistoryAdapter = TrackAdapter(searchHistoryTrack) { searchHistoryTrack ->
             searchHistoryClass.addTrack(searchHistoryTrack)
             readSearchHistory()
@@ -100,9 +95,9 @@ class SearchActivity : AppCompatActivity() {
         }
         rcViewSearchHistory.adapter = searchHistoryAdapter
         readSearchHistory()
+        visibleHistory()
 
-
-        cleanHistory_BT.setOnClickListener {
+        binding.cleanHistory.setOnClickListener {
             searchHistoryClass.clearHistory()
             searchHistoryTrack.clear()
             searchHistoryAdapter.notifyDataSetChanged()
@@ -110,11 +105,11 @@ class SearchActivity : AppCompatActivity() {
             hideKeyboard()
         }
 
-        back_BT.setOnClickListener {
+        binding.back.setOnClickListener {
             finish()
         }
 
-        clearButton.setOnClickListener {
+        binding.clean.setOnClickListener {
             tracks.clear()
             inputEditText.setText("")
             adapter.notifyDataSetChanged()
@@ -124,7 +119,7 @@ class SearchActivity : AppCompatActivity() {
             hideKeyboard()
         }
 
-        restartSearch_BT.setOnClickListener {
+        binding.RestartSearch.setOnClickListener {
             startSearchTrack()
         }
 
@@ -134,7 +129,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 rcViewHistory.isVisible = true
-                clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                binding.clean.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
                 (s?.toString() ?: "").also { searchQuery = it }
                 LLSearchHistory.isVisible = false
             }
