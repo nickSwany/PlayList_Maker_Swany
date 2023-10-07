@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="settings_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -15,6 +16,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="iconTint">@color/white</item>
     </style>
+
     <style name="back_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">@dimen/size_48</item>
         <item name="android:layout_height">@dimen/size_48</item>
@@ -24,22 +26,28 @@
         <item name="iconTint">@color/white</item>
         <item name="android:backgroundTint">@color/dark_theme</item>
     </style>
+
     <style name="back_main">
         <item name="android:background">@color/dark_theme</item>
     </style>
+
     <style name="back_settings">
         <item name="android:background">@color/dark_theme</item>
     </style>
+
     <style name="grey_background">
         <item name="android:background">@color/white</item>
         <item name="android:textColorHint">@color/dark_theme</item>
     </style>
+
     <style name="grey_to_dark">
         <item name="android:tint">@color/dark_theme</item>
     </style>
+
     <style name="grey_backgroundTint">
         <item name="android:backgroundTint">@color/white</item>
     </style>
+
     <style name="settings_card_track">
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/white</item>
@@ -48,14 +56,29 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
     </style>
+
     <style name="dark_to_white">
         <item name="android:textColor">@color/white</item>
     </style>
+
     <style name="mistakeImageNotFound">
         <item name="android:src">@drawable/dark_mode_smth_not_wrong</item>
     </style>
+
     <style name="mistakeImageNotInternet">
         <item name="android:src">@drawable/dark_mode_no_internet</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="delete_history" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:text">Очистить историю</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="cornerRadius">54dp</item>
+        <item name="android:backgroundTint">@color/white</item>
     </style>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="main_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -15,6 +16,7 @@
         <item name="iconTint">@color/black</item>
         <item name="iconGravity">textStart</item>
     </style>
+
     <style name="back_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">@dimen/size_48</item>
         <item name="android:layout_height">@dimen/size_48</item>
@@ -24,6 +26,18 @@
         <item name="iconTint">@color/black</item>
         <item name="android:backgroundTint">@color/white</item>
     </style>
+
+    <style name="delete_history" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:text">Очистить историю</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">54dp</item>
+        <item name="android:backgroundTint">@color/black</item>
+    </style>
+
     <style name="settings_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -34,6 +48,7 @@
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
     </style>
+
     <style name="color_text">
         <item name="android:textColor">@color/black</item>
         <item name="iconTint">@color/black</item>
@@ -42,19 +57,24 @@
     <style name="back_main">
         <item name="android:background">@color/blue</item>
     </style>
+
     <style name="back_settings">
         <item name="android:background">@color/white</item>
     </style>
+
     <style name="grey_background">
         <item name="android:background">@color/light_grey</item>
         <item name="android:textColorHint">@color/gray</item>
     </style>
+
     <style name="grey_to_dark">
         <item name="android:tint">@color/gray</item>
     </style>
+
     <style name="grey_backgroundTint">
         <item name="android:backgroundTint">@color/light_grey</item>
     </style>
+
     <style name="settings_card_track">
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/gray</item>
@@ -63,12 +83,15 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
     </style>
+
     <style name="dark_to_white">
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="mistakeImageNotFound">
         <item name="android:src">@drawable/light_mode_smth_not_wrong</item>
     </style>
+
     <style name="mistakeImageNotInternet">
         <item name="android:src">@drawable/light_mode_no_internet</item>
     </style>

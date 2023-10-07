@@ -1,58 +1,55 @@
 package search
 
-import android.graphics.Color
-import android.media.Ringtone
+import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
 import android.text.Editable
-import android.text.Spannable
-import android.text.SpannableString
 import android.text.TextWatcher
-import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pl_market.R
 import com.example.pl_market.Track
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.pl_market.databinding.ActivitySearchBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import search.classes.TrackAdapter
-import java.util.concurrent.TimeUnit
 import retrofit2.Response
 
 
+@Suppress("UNUSED_EXPRESSION")
 class SearchActivity : AppCompatActivity() {
-
+    private lateinit var binding: ActivitySearchBinding
     private lateinit var inputEditText: EditText
 
     companion object {
         var searchQuery = ""
-        const val SEARCH_STRING = "SEARCH_STRING"
+        const val KOD_API = 200
     }
 
     private val tracks = ArrayList<Track>()
+    private val searchHistoryTrack = ArrayList<Track>()
 
-    val adapter = TrackAdapter()
-
+    private lateinit var adapter: TrackAdapter
+    private lateinit var searchHistoryAdapter: TrackAdapter
     private lateinit var massageNotInternet: ViewGroup
     private lateinit var placeholderMessage: TextView
     private lateinit var messageNotFound: ViewGroup
     private lateinit var placeholderMessageNotFound: TextView
+    private lateinit var LLSearchHistory: ViewGroup
+    private lateinit var searchHistoryClass: SearchHistory
+    private lateinit var sharedPreferencesHistory: SharedPreferences
+    private lateinit var rcViewHistory: RecyclerView
+    private lateinit var rcViewSearchHistory: RecyclerView
 
     private val iTunesBaseUrl = "https://itunes.apple.com"
 
@@ -63,39 +60,67 @@ class SearchActivity : AppCompatActivity() {
 
     private val apiService = retrofit.create(ApiService::class.java)
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val rcViewHistory = findViewById<RecyclerView>(R.id.rcViewHistory)
-        rcViewHistory.adapter = adapter
-        rcViewHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val back_button = findViewById<Button>(R.id.back)
         inputEditText = findViewById(R.id.search_edittext)
-        val clearButton = findViewById<ImageView>(R.id.clean)
-        val restart_button = findViewById<Button>(R.id.RestartSearch)
-
+        rcViewHistory = findViewById(R.id.rcViewHistory)
         massageNotInternet = findViewById(R.id.massageNotInternet)
         placeholderMessage = findViewById(R.id.placeholderMessageNotInternet)
         messageNotFound = findViewById(R.id.messageNotFound)
         placeholderMessageNotFound = findViewById(R.id.placeholderMessage)
+        LLSearchHistory = findViewById(R.id.LL_searchHistory)
+        rcViewSearchHistory = findViewById(R.id.RC_searchHistory)
 
-        adapter.tracks = tracks
+        sharedPreferencesHistory = getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
 
-        back_button.setOnClickListener {
-            finish()
+        searchHistoryClass = SearchHistory(sharedPreferencesHistory)
+
+        adapter = TrackAdapter(tracks) { tracks ->
+            searchHistoryClass.addTrack(tracks)
+            searchHistoryAdapter.notifyDataSetChanged()
         }
 
-        clearButton.setOnClickListener {
-            tracks.clear()
-            inputEditText.setText("")
-            adapter.notifyDataSetChanged()
+        rcViewHistory.adapter = adapter
+
+        searchHistoryAdapter = TrackAdapter(searchHistoryTrack) { searchHistoryTrack ->
+            searchHistoryClass.addTrack(searchHistoryTrack)
+            readSearchHistory()
+            searchHistoryAdapter.notifyItemRangeChanged(MIN_HISTORY_TRACK, MAX_HISTORY_TRACK)
+        }
+        rcViewSearchHistory.adapter = searchHistoryAdapter
+        readSearchHistory()
+        visibleHistory()
+
+        binding.cleanHistory.setOnClickListener {
+            searchHistoryClass.clearHistory()
+            searchHistoryTrack.clear()
+            searchHistoryAdapter.notifyDataSetChanged()
+            visibleHistory()
             hideKeyboard()
         }
 
-        restart_button.setOnClickListener {
-            restartButton()
+        binding.back.setOnClickListener {
+            finish()
+        }
+
+        binding.clean.setOnClickListener {
+            tracks.clear()
+            inputEditText.setText("")
+            adapter.notifyDataSetChanged()
+            readSearchHistory()
+            visibleAll()
+            visibleHistory()
+            hideKeyboard()
+        }
+
+        binding.RestartSearch.setOnClickListener {
+            startSearchTrack()
         }
 
         inputEditText.addTextChangedListener(object : TextWatcher {
@@ -103,8 +128,10 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                rcViewHistory.isVisible = true
+                binding.clean.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
                 (s?.toString() ?: "").also { searchQuery = it }
+                LLSearchHistory.isVisible = false
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -116,9 +143,18 @@ class SearchActivity : AppCompatActivity() {
             inputEditText.setText(savedText)
         }
 
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+            readSearchHistory()
+            rcViewHistory.isVisible = false
+            if (searchHistoryTrack.isNotEmpty() && inputEditText.text.isNullOrEmpty()) {
+                LLSearchHistory.isVisible = true
+            } else false
+
+        }
+
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                restartButton()
+                startSearchTrack()
                 true
             } else {
                 false
@@ -126,20 +162,22 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun restartButton() {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun startSearchTrack() {
         val searchText = inputEditText.text.toString()
         if (inputEditText.text.isNotEmpty()) {
             apiService.searchTracks(searchText).enqueue(object : Callback<SearchResponse> {
                 override fun onResponse(
                     call: Call<SearchResponse>,
                     response: Response<SearchResponse>
+
                 ) {
-                    if (response.code() == 200) {
+                    if (response.code() == KOD_API) {
                         tracks.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
                             adapter.notifyDataSetChanged()
-                            massageNotInternet.visibility = View.GONE
+                            massageNotInternet.isVisible = false
                             hideKeyboard()
                         }
                         if (tracks.isEmpty()) {
@@ -168,14 +206,16 @@ class SearchActivity : AppCompatActivity() {
             })
         }
     }
+
+    @SuppressLint("NotifyDataSetChanged")
     private fun showError(text: String, additionalMessage: String) {
         if (text.isNotEmpty()) {
-            massageNotInternet.visibility = View.VISIBLE
-            placeholderMessage.visibility = View.VISIBLE
+            massageNotInternet.isVisible = true
+            placeholderMessage.isVisible = true
             tracks.clear()
             adapter.notifyDataSetChanged()
             placeholderMessage.text = text
-            placeholderMessageNotFound.visibility = View.GONE
+            placeholderMessageNotFound.isVisible = false
             if (additionalMessage.isNotEmpty()) {
                 Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
                     .show()
@@ -186,10 +226,11 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showMessage(text: String, additionalMessage: String) {
         if (text.isNotEmpty()) {
-            messageNotFound.visibility = View.VISIBLE
-            placeholderMessageNotFound.visibility = View.VISIBLE
+            messageNotFound.isVisible = true
+            placeholderMessageNotFound.isVisible = true
             tracks.clear()
             adapter.notifyDataSetChanged()
             placeholderMessageNotFound.text = text
@@ -198,7 +239,7 @@ class SearchActivity : AppCompatActivity() {
                     .show()
             }
         } else {
-            messageNotFound.visibility = View.GONE
+            messageNotFound.isVisible = false
             hideKeyboard()
         }
     }
@@ -220,5 +261,27 @@ class SearchActivity : AppCompatActivity() {
     private fun hideKeyboard() {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun readSearchHistory() {
+        searchHistoryTrack.clear()
+        searchHistoryTrack.addAll(searchHistoryClass.read())
+        searchHistoryAdapter.notifyDataSetChanged()
+    }
+
+    fun visibleAll() {
+        rcViewHistory.isVisible = false
+        LLSearchHistory.isVisible = true
+        messageNotFound.isVisible = false
+        placeholderMessageNotFound.isVisible = false
+        massageNotInternet.isVisible = false
+        placeholderMessage.isVisible = false
+    }
+
+    fun visibleHistory() {
+        if (searchHistoryTrack.isEmpty()) {
+            LLSearchHistory.isVisible = false
+        } else true
     }
 }

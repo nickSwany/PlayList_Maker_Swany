@@ -1,18 +1,19 @@
 package search.classes
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pl_market.R
 import com.example.pl_market.Track
 
-class TrackAdapter(): RecyclerView.Adapter<TrackViewHolder> (){
-
-    var tracks = ArrayList<Track>()
+class TrackAdapter(private val tracks: ArrayList<Track>, private var itemClickListener: (Track) -> Unit): RecyclerView.Adapter<TrackViewHolder> (){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder = TrackViewHolder(parent)
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks.get(position))
+        holder.bind(tracks[position])
+        itemClickListener.let { clickListener ->
+            holder.itemView.setOnClickListener {
+                clickListener(tracks[position])
+            }
+        }
     }
     override fun getItemCount(): Int {
         return tracks.size

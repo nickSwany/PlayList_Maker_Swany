@@ -1,32 +1,41 @@
 package com.example.pl_market
 
+import android.app.Application
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
+import com.example.pl_market.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySettingsBinding
+    private lateinit var sharedPreferencesHistory: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val backButton = findViewById<Button>(R.id.back)
-        val shareView = findViewById<ImageView>(R.id.share)
-        val supportView = findViewById<ImageView>(R.id.support)
-        val userAgreement = findViewById<ImageView>(R.id.userAgreement)
+        binding.themeSwitch.isChecked = (applicationContext as App).switchOn
 
-        backButton.setOnClickListener {
+        binding.themeSwitch.setOnCheckedChangeListener { _, checked  ->
+            (applicationContext as App).switch_Theme(checked)
+            sharedPreferencesHistory = getSharedPreferences(THEME_PREFS, MODE_PRIVATE)
+            sharedPreferencesHistory.edit().putBoolean(DARK_THEME, checked).apply()
+        }
+
+        binding.back.setOnClickListener {
             finish()
         }
-        shareView.setOnClickListener {
+        binding.share.setOnClickListener {
             shareCourseLink()
         }
-        supportView.setOnClickListener {
+        binding.support.setOnClickListener {
             writeSupport()
         }
-        userAgreement.setOnClickListener {
+        binding.userAgreement.setOnClickListener {
             openUserAgreement()
         }
     }
@@ -56,3 +65,5 @@ class SettingsActivity : AppCompatActivity() {
         startActivity(browserIntent)
     }
 }
+
+
