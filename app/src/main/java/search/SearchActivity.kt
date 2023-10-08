@@ -1,6 +1,7 @@
 package search
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,8 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pl_market.R
-import com.example.pl_market.Track
+import com.example.pl_market.*
 import com.example.pl_market.databinding.ActivitySearchBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -81,14 +81,17 @@ class SearchActivity : AppCompatActivity() {
 
         searchHistoryClass = SearchHistory(sharedPreferencesHistory)
 
-        adapter = TrackAdapter(tracks) { tracks ->
-            searchHistoryClass.addTrack(tracks)
-            searchHistoryAdapter.notifyDataSetChanged()
-        }
+        adapter =
+            TrackAdapter(tracks) { tracks ->
+                openPlayer(tracks)
+                searchHistoryClass.addTrack(tracks)
+                searchHistoryAdapter.notifyDataSetChanged()
+            }
 
         rcViewHistory.adapter = adapter
 
         searchHistoryAdapter = TrackAdapter(searchHistoryTrack) { searchHistoryTrack ->
+            openPlayer(searchHistoryTrack)
             searchHistoryClass.addTrack(searchHistoryTrack)
             readSearchHistory()
             searchHistoryAdapter.notifyItemRangeChanged(MIN_HISTORY_TRACK, MAX_HISTORY_TRACK)
@@ -122,6 +125,7 @@ class SearchActivity : AppCompatActivity() {
         binding.RestartSearch.setOnClickListener {
             startSearchTrack()
         }
+
 
         inputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -283,5 +287,19 @@ class SearchActivity : AppCompatActivity() {
         if (searchHistoryTrack.isEmpty()) {
             LLSearchHistory.isVisible = false
         } else true
+    }
+
+    fun openPlayer(track: Track) {
+        val intent = Intent(this, PlayerActivity::class.java)
+        intent.putExtra(EXTRA_TRACK_NAME, track.trackName)
+        intent.putExtra(EXTRA_ARTIST_NAME, track.artistName)
+        intent.putExtra(EXTRA_TIME_MILLIS, track.trackTimeMillis)
+        intent.putExtra(EXTRA_ART_TRACK, track.artworkUrl100)
+        intent.putExtra(EXTRA_YEAR, track.releaseDate)
+        intent.putExtra(EXTRA_COllECTION_NAME, track.collectionName)
+        intent.putExtra(EXTRA_GENRE_NAME, track.primaryGenreName)
+        intent.putExtra(EXTRA_COUNTRY, track.country)
+        startActivity(intent)
+        adapter.notifyDataSetChanged()
     }
 }
