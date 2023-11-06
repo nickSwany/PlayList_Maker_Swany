@@ -111,5 +111,8 @@
     <style name="back">
         <item name="navigationIcon">@drawable/back</item>
     </style>
+<style name="button_theme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <item name="colorOnSecondary">@color/dark_theme</item>
+</style>
 
 </resources>

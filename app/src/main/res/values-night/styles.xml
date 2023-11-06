@@ -96,4 +96,7 @@
     <style name="back">
         <item name="navigationIcon">@drawable/dark_mode_back</item>
     </style>
+    <style name="button_theme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorOnSecondary">@color/white</item>
+    </style>
 </resources>
