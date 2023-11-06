@@ -159,26 +159,27 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun changeTimeProgress(): Runnable {
-return object : Runnable {
-    override fun run() {
-        when (playerState) {
-            STATE_PLAYING -> {
-                binding.timeLeft.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(
-                    mediaPlayer?.currentPosition
-                )
-                mainThreadHandler?.postDelayed(this, DELAY)
-            }
-            STATE_PAUSED -> {
-                mainThreadHandler?.removeCallbacks(this)
-            }
-            STATE_PREPARED -> {
-                binding.timeLeft.text = DEFAULT_TIME_LEFT
-            }
-            STATE_DEFAULT -> {
-                binding.timeLeft.text = DEFAULT_TIME_LEFT
+        return object : Runnable {
+            override fun run() {
+                when (playerState) {
+                    STATE_PLAYING -> {
+                        binding.timeLeft.text =
+                            SimpleDateFormat("mm:ss", Locale.getDefault()).format(
+                                mediaPlayer.currentPosition
+                            )
+                        mainThreadHandler?.postDelayed(this, DELAY)
+                    }
+                    STATE_PAUSED -> {
+                        mainThreadHandler?.removeCallbacks(this)
+                    }
+                    STATE_PREPARED -> {
+                        binding.timeLeft.text = DEFAULT_TIME_LEFT
+                    }
+                    STATE_DEFAULT -> {
+                        binding.timeLeft.text = DEFAULT_TIME_LEFT
+                    }
+                }
             }
         }
-    }
-}
     }
 }
