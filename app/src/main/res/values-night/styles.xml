@@ -81,4 +81,22 @@
         <item name="cornerRadius">54dp</item>
         <item name="android:backgroundTint">@color/white</item>
     </style>
+
+    <style name="button_play">
+        <item name="android:src">@drawable/dark_mode_button_play</item>
+    </style>
+
+    <style name="button_like">
+        <item name="android:src">@drawable/dark_mode_button_like</item>
+    </style>
+
+    <style name="button_add">
+        <item name="android:src">@drawable/dark_mode_button_add</item>
+    </style>
+    <style name="back">
+        <item name="navigationIcon">@drawable/dark_mode_back</item>
+    </style>
+    <style name="button_theme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorOnSecondary">@color/white</item>
+    </style>
 </resources>

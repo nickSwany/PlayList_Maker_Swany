@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/button_theme">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tollBar"
+        style="@style/back"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/track_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="26dp"
+        android:src="@drawable/error_paint_internet"
+        app:layout_constraintBottom_toTopOf="@id/track_name"
+        app:layout_constraintDimensionRatio="w, 1:1"
+        app:layout_constraintEnd_toEndOf="@id/end_view"
+        app:layout_constraintStart_toStartOf="@id/start_view"
+        app:layout_constraintTop_toBottomOf="@id/tollBar" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dp_24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dp_24" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/image_group_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="track_image, track_name, group_name" />
+
+    <TextView
+        android:id="@+id/track_name"
+        style="@style/dark_to_white"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_24"
+        android:ellipsize="end"
+        android:fontFamily="@font/ys_display_medium"
+        android:maxLines="1"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toTopOf="@id/group_name"
+        app:layout_constraintEnd_toEndOf="@id/end_view"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/start_view"
+        app:layout_constraintTop_toBottomOf="@id/track_image"
+        tools:text="Yestarday (Remastered 2009)" />
+
+    <TextView
+        android:id="@+id/group_name"
+        style="@style/dark_to_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_marginBottom="34dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintBottom_toTopOf="@id/image_group_name"
+        app:layout_constraintEnd_toEndOf="@id/end_view"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@id/start_view"
+        app:layout_constraintTop_toBottomOf="@id/track_name"
+        tools:text="The Beatles" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/button_bellow_track"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="button_add, playButton, button_like, time_left" />
+
+    <ImageView
+        android:id="@+id/button_add"
+        style="@style/button_add"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        app:layout_constraintBottom_toBottomOf="@id/playButton"
+        app:layout_constraintEnd_toStartOf="@id/playButton"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@id/start_view"
+        app:layout_constraintTop_toBottomOf="@id/image_group_name" />
+
+    <ImageView
+        android:id="@+id/playButton"
+        android:src="@drawable/button_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/button_like"
+        app:layout_constraintStart_toEndOf="@id/button_add"
+        app:layout_constraintTop_toBottomOf="@id/image_group_name" />
+
+    <ImageView
+        android:id="@+id/button_like"
+        style="@style/button_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/playButton"
+        app:layout_constraintEnd_toEndOf="@id/end_view"
+        app:layout_constraintStart_toEndOf="@id/playButton"
+        app:layout_constraintTop_toBottomOf="@id/image_group_name" />
+
+    <TextView
+        android:id="@+id/time_left"
+        style="@style/dark_to_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="@id/playButton"
+        app:layout_constraintStart_toStartOf="@id/playButton"
+        app:layout_constraintTop_toBottomOf="@id/playButton"
+        tools:text="00:00" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_text_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/otstup_16" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/otstup_16" />
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/duration"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintStart_toStartOf="@id/start_text_view"
+        app:layout_constraintTop_toBottomOf="@id/button_bellow_track" />
+
+    <TextView
+        android:id="@+id/album"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_17"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/album"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintStart_toStartOf="@id/start_text_view"
+        app:layout_constraintTop_toBottomOf="@id/duration" />
+
+    <TextView
+        android:id="@+id/year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_17"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/year"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintStart_toStartOf="@id/start_text_view"
+        app:layout_constraintTop_toBottomOf="@id/album" />
+
+    <TextView
+        android:id="@+id/genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_17"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/genre"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintStart_toStartOf="@id/start_text_view"
+        app:layout_constraintTop_toBottomOf="@id/year" />
+
+    <TextView
+        android:id="@+id/country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_17"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/country"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintStart_toStartOf="@id/start_text_view"
+        app:layout_constraintTop_toBottomOf="@id/genre" />
+
+    <TextView
+        android:id="@+id/duration_time"
+        style="@style/dark_to_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintBottom_toBottomOf="@id/duration"
+        app:layout_constraintEnd_toEndOf="@id/end_text_view"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/duration"
+        app:layout_constraintTop_toTopOf="@id/duration"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="00:00" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/album_barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="duration" />
+
+    <TextView
+        android:id="@+id/album_name"
+        style="@style/dark_to_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/ys_display_medium"
+        android:gravity="end|center_vertical"
+        android:maxLines="1"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintBottom_toBottomOf="@id/album"
+        app:layout_constraintEnd_toEndOf="@id/end_text_view"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/album_barrier"
+        app:layout_constraintTop_toTopOf="@id/album"
+        tools:text="Album Name" />
+
+    <TextView
+        android:id="@+id/year_number"
+        style="@style/dark_to_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintBottom_toBottomOf="@id/year"
+        app:layout_constraintEnd_toEndOf="@id/end_text_view"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/album_barrier"
+        app:layout_constraintTop_toTopOf="@id/year"
+        tools:text="1111" />
+
+    <TextView
+        android:id="@+id/genre_text"
+        style="@style/dark_to_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintBottom_toBottomOf="@id/genre"
+        app:layout_constraintEnd_toEndOf="@id/end_text_view"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/album_barrier"
+        app:layout_constraintTop_toTopOf="@id/genre"
+        tools:text="Rock" />
+
+    <TextView
+        android:id="@+id/country_text"
+        style="@style/dark_to_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintBottom_toBottomOf="@id/country"
+        app:layout_constraintEnd_toEndOf="@id/end_text_view"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/album_barrier"
+        app:layout_constraintTop_toTopOf="@id/country"
+        tools:text="Russia" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/country" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
