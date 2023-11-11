@@ -88,16 +88,8 @@
     <FrameLayout
         android:id="@+id/FL_Search_History"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:visibility="visible">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/blue"
-            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcViewHistory"
@@ -114,7 +106,6 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-
             <TextView
                 style="@style/dark_to_white"
                 android:layout_width="wrap_content"
@@ -130,9 +121,9 @@
                 android:id="@+id/RC_searchHistory"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="8"
+                android:layout_weight="1"
                 tools:listitem="@layout/card_item" />
 
             <Button

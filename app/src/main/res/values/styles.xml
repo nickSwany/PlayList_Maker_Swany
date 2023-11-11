@@ -96,23 +96,4 @@
         <item name="android:src">@drawable/light_mode_no_internet</item>
     </style>
 
-    <style name="button_play">
-        <item name="android:src">@drawable/button_play</item>
-    </style>
-
-    <style name="button_like">
-        <item name="android:src">@drawable/button_like</item>
-    </style>
-
-    <style name="button_add">
-        <item name="android:src">@drawable/button_add</item>
-    </style>
-
-    <style name="back">
-        <item name="navigationIcon">@drawable/back</item>
-    </style>
-<style name="button_theme" parent="Theme.AppCompat.DayNight.DarkActionBar">
-    <item name="colorOnSecondary">@color/dark_theme</item>
-</style>
-
 </resources>

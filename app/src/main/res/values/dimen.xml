@@ -17,10 +17,4 @@
     <dimen name="dp_14">14dp</dimen>
     <dimen name="otstyp_24">24dp</dimen>
     <dimen name="otstyp_102">102dp</dimen>
-    <dimen name="radius_8">8dp</dimen>
-    <dimen name="dp_24">24dp</dimen>
-    <dimen name="dp_12">12dp</dimen>
-    <dimen name="sp_14">14sp</dimen>
-    <dimen name="sp_13">13sp</dimen>
-    <dimen name="dp_17">17dp</dimen>
 </resources>
