@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:theme="@style/button_theme">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -89,22 +90,22 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="button_add, button_play, button_like, time_left" />
+        app:constraint_referenced_ids="button_add, playButton, button_like, time_left" />
 
     <ImageView
         android:id="@+id/button_add"
         style="@style/button_add"
         android:layout_width="51dp"
         android:layout_height="51dp"
-        app:layout_constraintBottom_toBottomOf="@id/button_play"
-        app:layout_constraintEnd_toStartOf="@id/button_play"
+        app:layout_constraintBottom_toBottomOf="@id/playButton"
+        app:layout_constraintEnd_toStartOf="@id/playButton"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@id/start_view"
         app:layout_constraintTop_toBottomOf="@id/image_group_name" />
 
     <ImageView
-        android:id="@+id/button_play"
-        style="@style/button_play"
+        android:id="@+id/playButton"
+        android:src="@drawable/button_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/button_like"
@@ -116,9 +117,9 @@
         style="@style/button_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/button_play"
+        app:layout_constraintBottom_toBottomOf="@id/playButton"
         app:layout_constraintEnd_toEndOf="@id/end_view"
-        app:layout_constraintStart_toEndOf="@id/button_play"
+        app:layout_constraintStart_toEndOf="@id/playButton"
         app:layout_constraintTop_toBottomOf="@id/image_group_name" />
 
     <TextView
@@ -129,9 +130,9 @@
         android:layout_marginTop="4dp"
         android:fontFamily="@font/ys_display_medium"
         android:textSize="@dimen/sp_14"
-        app:layout_constraintEnd_toEndOf="@id/button_play"
-        app:layout_constraintStart_toStartOf="@id/button_play"
-        app:layout_constraintTop_toBottomOf="@id/button_play"
+        app:layout_constraintEnd_toEndOf="@id/playButton"
+        app:layout_constraintStart_toStartOf="@id/playButton"
+        app:layout_constraintTop_toBottomOf="@id/playButton"
         tools:text="00:00" />
 
     <androidx.constraintlayout.widget.Guideline

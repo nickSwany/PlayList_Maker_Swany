@@ -65,5 +65,3 @@ class SettingsActivity : AppCompatActivity() {
         startActivity(browserIntent)
     }
 }
-
-
