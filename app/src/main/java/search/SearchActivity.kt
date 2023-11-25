@@ -20,12 +20,15 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pl_market.*
+import com.example.pl_market.data.network.ApiService
 import com.example.pl_market.databinding.ActivitySearchBinding
+import com.example.pl_market.domain.models.Track
+import com.example.pl_market.presentation.*
+import com.example.pl_market.ui.activity.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import search.classes.TrackAdapter
 import retrofit2.Response
 
 

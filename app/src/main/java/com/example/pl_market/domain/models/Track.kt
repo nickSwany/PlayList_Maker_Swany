@@ -1,4 +1,4 @@
-package com.example.pl_market
+package com.example.pl_market.domain.models
 
 import android.os.Parcelable
 

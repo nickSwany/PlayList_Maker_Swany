@@ -1,4 +1,4 @@
-package com.example.pl_market
+package com.example.pl_market.presentation
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.pl_market.R
 import com.example.pl_market.databinding.ActivityPlayerBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,9 +29,9 @@ class PlayerActivity : AppCompatActivity() {
 
     companion object {
         private const val DEFAULT_TIME_LEFT = "00:00"
-        private const val STATE_DEFAULT = 0
+        const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
+        const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
         private const val DELAY = 1000L
     }
