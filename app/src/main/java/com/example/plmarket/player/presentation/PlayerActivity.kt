@@ -1,4 +1,4 @@
-package com.example.pl_market
+package com.example.plmarket.player.presentation
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -9,28 +9,28 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.pl_market.R
 import com.example.pl_market.databinding.ActivityPlayerBinding
+import com.example.plmarket.search.SearchActivity.Companion.EXTRA_ARTIST_NAME
+import com.example.plmarket.search.SearchActivity.Companion.EXTRA_ART_TRACK
+import com.example.plmarket.search.SearchActivity.Companion.EXTRA_COUNTRY
+import com.example.plmarket.search.SearchActivity.Companion.EXTRA_COllECTION_NAME
+import com.example.plmarket.search.SearchActivity.Companion.EXTRA_GENRE_NAME
+import com.example.plmarket.search.SearchActivity.Companion.EXTRA_SONG
+import com.example.plmarket.search.SearchActivity.Companion.EXTRA_TIME_MILLIS
+import com.example.plmarket.search.SearchActivity.Companion.EXTRA_TRACK_NAME
+import com.example.plmarket.search.SearchActivity.Companion.EXTRA_YEAR
 import java.text.SimpleDateFormat
 import java.util.*
-
-const val EXTRA_TRACK_NAME = "trackName"
-const val EXTRA_ARTIST_NAME = "artistName"
-const val EXTRA_TIME_MILLIS = "timeMillis"
-const val EXTRA_ART_TRACK = "artTrack"
-const val EXTRA_COUNTRY = "country"
-const val EXTRA_YEAR = "year"
-const val EXTRA_GENRE_NAME = "genreName"
-const val EXTRA_COllECTION_NAME = "collectionName"
-const val EXTRA_SONG = "track_song"
 
 
 class PlayerActivity : AppCompatActivity() {
 
     companion object {
         private const val DEFAULT_TIME_LEFT = "00:00"
-        private const val STATE_DEFAULT = 0
+        const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
+        const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
         private const val DELAY = 1000L
     }
@@ -43,6 +43,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private var playerState = STATE_DEFAULT
     private var url: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +104,7 @@ class PlayerActivity : AppCompatActivity() {
             .transform(RoundedCorners(cornerSize))
             .into(binding.trackImage)
     }
+
 
     fun getYearFromDatString(dataString: String): String? {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())

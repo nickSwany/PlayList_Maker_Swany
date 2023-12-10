@@ -1,6 +1,4 @@
-package com.example.pl_market
-
-import android.os.Parcelable
+package com.example.plmarket.player.domain.models
 
 data class Track(
     val trackName: String,
@@ -13,4 +11,4 @@ data class Track(
     val primaryGenreName: String?,
     val country: String?,
     val previewUrl: String?
-) {}
+)

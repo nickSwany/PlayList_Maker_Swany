@@ -1,4 +1,4 @@
-package search.classes
+package com.example.plmarket.player.presentation
 
 import android.content.Context
 import android.util.TypedValue
@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.plmarket.player.domain.models.Track
+import java.text.SimpleDateFormat
 import com.bumptech.glide.request.RequestOptions
 import com.example.pl_market.R
-import com.example.pl_market.Track
-import java.text.SimpleDateFormat
 import java.util.*
 
 class TrackViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(

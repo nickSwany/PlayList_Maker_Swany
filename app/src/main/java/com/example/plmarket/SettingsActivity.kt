@@ -1,14 +1,15 @@
-package com.example.pl_market
+package com.example.plmarket.search
 
-import android.app.Application
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
+import com.example.pl_market.R
 import com.example.pl_market.databinding.ActivitySettingsBinding
+import com.example.plmarket.App
+import com.example.plmarket.DARK_THEME
+import com.example.plmarket.THEME_PREFS
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding

@@ -1,4 +1,4 @@
-package com.example.pl_market
+package com.example.plmarket
 
 import org.junit.Test
 

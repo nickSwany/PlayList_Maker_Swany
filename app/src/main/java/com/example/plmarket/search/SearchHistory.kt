@@ -1,8 +1,8 @@
-package search
+package com.example.plmarket.search
 
 import android.content.SharedPreferences
 import android.util.Log
-import com.example.pl_market.Track
+import com.example.plmarket.player.domain.models.Track
 import com.google.gson.Gson
 
 const val HISTORY_KEY = "history_key"

@@ -1,11 +1,10 @@
-package com.example.pl_market
+package com.example.plmarket.search
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.os.PersistableBundle
 import android.widget.Button
-import search.SearchActivity
+import com.example.pl_market.R
 
 
 class MainActivity : AppCompatActivity() {

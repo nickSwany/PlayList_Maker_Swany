@@ -1,4 +1,4 @@
-package search
+package com.example.plmarket.search
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -19,13 +19,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pl_market.*
+import com.example.pl_market.R
 import com.example.pl_market.databinding.ActivitySearchBinding
+import com.example.plmarket.player.data.network.ApiService
+import com.example.plmarket.player.domain.models.Track
+import com.example.plmarket.player.presentation.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import search.classes.TrackAdapter
 import retrofit2.Response
 
 
@@ -39,6 +41,15 @@ class SearchActivity : AppCompatActivity() {
         const val KOD_API = 200
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        const val EXTRA_TRACK_NAME = "trackName"
+        const val EXTRA_ARTIST_NAME = "artistName"
+        const val EXTRA_TIME_MILLIS = "timeMillis"
+        const val EXTRA_ART_TRACK = "artTrack"
+        const val EXTRA_COUNTRY = "country"
+        const val EXTRA_YEAR = "year"
+        const val EXTRA_GENRE_NAME = "genreName"
+        const val EXTRA_COllECTION_NAME = "collectionName"
+        const val EXTRA_SONG = "track_song"
     }
 
     private val tracks = ArrayList<Track>()
@@ -61,6 +72,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var rcViewHistory: RecyclerView
     private lateinit var rcViewSearchHistory: RecyclerView
     private lateinit var progressBar: ProgressBar
+
 
     private val iTunesBaseUrl = "https://itunes.apple.com"
 

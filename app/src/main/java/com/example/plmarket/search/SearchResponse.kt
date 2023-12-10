@@ -1,6 +1,6 @@
-package search
+package com.example.plmarket.search
 
-import com.example.pl_market.Track
+import com.example.plmarket.player.domain.models.Track
 import com.google.gson.annotations.SerializedName
 
 class SearchResponse(
