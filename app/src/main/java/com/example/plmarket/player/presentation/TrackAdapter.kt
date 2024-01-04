@@ -3,6 +3,7 @@ package com.example.plmarket.player.presentation
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plmarket.player.domain.models.Track
+import com.example.plmarket.search.ui.adapter.TrackViewHolder
 
 class TrackAdapter(private val tracks: ArrayList<Track>, private var itemClickListener: (Track) -> Unit): RecyclerView.Adapter<TrackViewHolder> (){
 
