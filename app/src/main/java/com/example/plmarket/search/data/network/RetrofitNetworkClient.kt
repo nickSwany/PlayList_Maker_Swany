@@ -19,11 +19,26 @@ class RetrofitNetworkClient : NetworkClient {
     private val apiService = retrofit.create(ApiService::class.java)
 
     override fun doRequest(dto: Any): Response {
-        if (dto is TrackSearchRequest) {
+
+        return if (dto is TrackSearchRequest) {
             val resp = apiService.searchTracks(dto.expression).execute()
-            return Response(resultCode = resp.code())
+            val body = resp.body() ?: Response()
+            body.apply { resultCode = resp.code() }
         } else {
-            return Response(resultCode = 400)
+            Response().apply { resultCode = 400 }
         }
     }
+
+
+/*
+    override fun doRequest(dto: Any): Response {
+        return if (dto is TrackSearchRequest) {
+            val resp = apiService.searchTracks(dto.expression).execute()
+            Response(resultCode = resp.code())
+        } else {
+            Response(resultCode = 400)
+        }
+    }
+
+ */
 }

@@ -14,10 +14,9 @@ import com.example.plmarket.search.domain.TrackInteractor
 import com.example.plmarket.search.ui.activity.TrackState
 
 class SearchViewModel(
-    application: Application,
     private val interactorHistory: TrackHistoryInteractor,
     private val interactorSearch: TrackInteractor
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
@@ -25,7 +24,7 @@ class SearchViewModel(
     }
 
     private var latestSearchText: String? = null
-    private var handler = Handler(Looper.getMainLooper())
+    private val handler = Handler(Looper.getMainLooper())
 
     private val _clearHistory = MutableLiveData<Unit>()
     val clearHistory: LiveData<Unit> = _clearHistory
@@ -35,7 +34,7 @@ class SearchViewModel(
     }
 
     fun addHistoryList(tracksHistory: ArrayList<Track>) {
-        interactorHistory.additHistoryList(tracksHistory)
+        interactorHistory.editHistoryList(tracksHistory)
     }
 
     fun clearTrackListHistory(tracksHistory: ArrayList<Track>) {

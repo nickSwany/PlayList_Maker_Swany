@@ -8,7 +8,7 @@ import com.example.plmarket.search.domain.TrackRepository
 
 
 class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepository {
-    var codeResult = 0
+    private var codeResult = 0
 
     override fun code(): Int {
         return codeResult
@@ -16,6 +16,8 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
 
     override fun searchTrack(expression: String): Resource<List<Track>> {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
+
+
         return when (response.resultCode) {
             -1 -> Resource.Error(SearchStatus.NO_INTERNET.nameStatus)
             200 -> {

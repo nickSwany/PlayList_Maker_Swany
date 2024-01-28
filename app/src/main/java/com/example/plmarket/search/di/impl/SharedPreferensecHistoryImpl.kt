@@ -1,4 +1,4 @@
-package com.example.plmarket.search.domain.Impl
+package com.example.plmarket.search.di.impl
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
@@ -15,7 +15,7 @@ const val KEY_HISTORY_ALL = "key_history_all"
 
 class SharedPreferensecHistoryImpl(private val context: Context) : SharedPreferensecHistory {
     private lateinit var sharedPreferences: SharedPreferences
-    lateinit var searchHistory: SearchHistory
+    private lateinit var searchHistory: SearchHistory
 
     private fun getSharedPreferences() {
         sharedPreferences = context.getSharedPreferences(
@@ -23,10 +23,8 @@ class SharedPreferensecHistoryImpl(private val context: Context) : SharedPrefere
         )
     }
 
-
     override fun addTrackInAdapter(track: Track) {
         getSharedPreferences()
-
         val json = Gson().toJson(track)
         sharedPreferences.edit().putString(KEY_HISTORY, json).apply()
     }
@@ -41,13 +39,14 @@ class SharedPreferensecHistoryImpl(private val context: Context) : SharedPrefere
         sharedPreferences.registerOnSharedPreferenceChangeListener(searchHistory.listener)
     }
 
-    override fun aeditHistoryList(tracksHistory: ArrayList<Track>) {
-        sharedPreferences.edit().putString(KEY_HISTORY_ALL, Gson().toJson(tracksHistory)).apply()
+    override fun editHistoryList(tracksHistory: ArrayList<Track>) {
+        sharedPreferences.edit()
+            .putString(KEY_HISTORY_ALL, Gson().toJson(tracksHistory))
+            .apply()
     }
 
     override fun clearTrack(tracksHistory: ArrayList<Track>) {
         sharedPreferences.edit().clear().apply()
         tracksHistory.clear()
     }
-
 }

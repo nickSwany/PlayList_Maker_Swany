@@ -1,4 +1,4 @@
-package com.example.plmarket.search.domain.Impl
+package com.example.plmarket.search.di.impl
 
 import com.example.plmarket.player.domain.models.Track
 import com.example.plmarket.search.domain.SharedPreferensecHistory
@@ -15,8 +15,8 @@ class TrackHistoryInteractorImpl(private val sharedHistory: SharedPreferensecHis
 
     }
 
-    override fun additHistoryList(tracksHistory: ArrayList<Track>) {
-        sharedHistory.aeditHistoryList(tracksHistory)
+    override fun editHistoryList(tracksHistory: ArrayList<Track>) {
+        sharedHistory.editHistoryList(tracksHistory)
     }
 
     override fun clearTrack(tracksHistory: ArrayList<Track>) {

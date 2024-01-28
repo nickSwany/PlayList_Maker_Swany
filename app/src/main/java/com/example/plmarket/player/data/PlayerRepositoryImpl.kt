@@ -2,8 +2,6 @@ package com.example.plmarket.player.data
 
 import android.media.MediaPlayer
 import android.os.Looper
-import com.example.pl_market.R
-import com.example.pl_market.databinding.ActivityPlayerBinding
 import com.example.plmarket.player.domain.StatePlayer
 import com.example.plmarket.player.domain.api.PlayerListener
 import com.example.plmarket.player.domain.api.PlayerRepository
@@ -18,23 +16,30 @@ class PlayerRepositoryImpl : PlayerRepository {
     }
 
     private var listener: PlayerListener? = null
-    private var playerState= StatePlayer.STATE_DEFAULT
+    private var playerState = StatePlayer.STATE_DEFAULT
     private var time = DEFAULT_TIME_LEFT
-    private lateinit var binding: ActivityPlayerBinding
 
     val handler = Handler(Looper.getMainLooper())
     val mediaPlayer = MediaPlayer()
 
     override fun preparePlayer(url: String) {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            binding.playButton.isEnabled = true
-            playerState = StatePlayer.STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            binding.playButton.setImageResource(R.drawable.button_play)
-            playerState = StatePlayer.STATE_PREPARED
+        try {
+            mediaPlayer.reset()
+            mediaPlayer.setDataSource(url)
+            mediaPlayer.prepareAsync()
+
+            mediaPlayer.setOnPreparedListener {
+                playerState = StatePlayer.STATE_PREPARED
+                listener?.onStateUpdate(playerState)
+            }
+
+            mediaPlayer.setOnCompletionListener {
+                playerState = StatePlayer.STATE_PREPARED
+                listener?.onStateUpdate(playerState)
+                time = DEFAULT_TIME_LEFT
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -50,21 +55,23 @@ class PlayerRepositoryImpl : PlayerRepository {
             StatePlayer.STATE_PREPARED, StatePlayer.STATE_PAUSED -> {
                 startPlayer()
             }
-
-            else -> {StatePlayer.STATE_DEFAULT}
+            else -> {
+                StatePlayer.STATE_DEFAULT
+            }
         }
     }
 
     override fun startPlayer() {
-        mediaPlayer.start()
-        binding.playButton.setImageResource(R.drawable.button_pause)
         playerState = StatePlayer.STATE_PLAYING
+        mediaPlayer.start()
+        updateTime(time)
+        listener?.onStateUpdate(playerState)
     }
 
     override fun pausePlayer() {
-        mediaPlayer.pause()
-        binding.playButton.setImageResource(R.drawable.button_play)
         playerState = StatePlayer.STATE_PAUSED
+        mediaPlayer.pause()
+        listener?.onStateUpdate(playerState)
     }
 
     override fun updateTime(time: String) {
@@ -73,23 +80,16 @@ class PlayerRepositoryImpl : PlayerRepository {
         handler.postDelayed(
             object : Runnable {
                 override fun run() {
-                    when (playerState) {
-                        StatePlayer.STATE_PLAYING -> {
-                            binding.timeLeft.text =
-                                SimpleDateFormat("mm:ss", Locale.getDefault()).format(
-                                    mediaPlayer.currentPosition
-                                )
-                            handler.postDelayed(this, DELAY) // handler?.
-                        }
-                        StatePlayer.STATE_PAUSED -> {
-                            handler.removeCallbacks(this) // handler?.
-                        }
-                        StatePlayer.STATE_PREPARED -> {
-                            binding.timeLeft.text = DEFAULT_TIME_LEFT
-                        }
-                        StatePlayer.STATE_DEFAULT -> {
-                            binding.timeLeft.text = DEFAULT_TIME_LEFT
-                        }
+                    if (playerState == StatePlayer.STATE_PLAYING) {
+                        this@PlayerRepositoryImpl.time = SimpleDateFormat(
+                            "mm:ss",
+                            Locale.getDefault()
+                        ).format(mediaPlayer.currentPosition)
+                        listener?.onTimeUpdate(this@PlayerRepositoryImpl.time)
+                        handler.postDelayed(
+                            this,
+                            DELAY,
+                        )
                     }
                 }
             },
@@ -100,5 +100,4 @@ class PlayerRepositoryImpl : PlayerRepository {
     override fun setupListener(listener: PlayerListener) {
         this.listener = listener
     }
-
 }

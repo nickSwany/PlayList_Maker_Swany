@@ -18,6 +18,7 @@ import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_SO
 import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_TIME_MILLIS
 import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_TRACK_NAME
 import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_YEAR
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,12 +31,11 @@ class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private var songurl: String = ""
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -81,7 +81,9 @@ class PlayerActivity : AppCompatActivity() {
             artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
 
         val urlImage = intent.getStringExtra(EXTRA_ART_TRACK)
-        viewModel.getCoverArtwork(urlImage)
+        if (!urlImage.isNullOrEmpty()) {
+            viewModel.getCoverArtwork(urlImage)
+        }
 
         viewModel.coverArtwork.observe(this) {
             val url = it
@@ -114,13 +116,11 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.secondCounter.observe(this) { time ->
             binding.timeLeft.text = time
         }
-
     }
 
     override fun onPause() {
         super.onPause()
         viewModel.onPause()
-
     }
 
     fun getYearFromDatString(dataString: String): String? {

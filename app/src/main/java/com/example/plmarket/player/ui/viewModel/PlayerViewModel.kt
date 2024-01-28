@@ -22,8 +22,8 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     private val _checkState = MutableLiveData<StatePlayer>()
     val checkState: LiveData<StatePlayer> = _checkState
 
-    private val _timeSomg = MutableLiveData<String>()
-    val timeSong: LiveData<String> = _timeSomg
+    private val _timeSong = MutableLiveData<String>()
+    val timeSong: LiveData<String> = _timeSong
 
     private val _dataSong = MutableLiveData<String>()
     val dataSong: LiveData<String> = _dataSong
@@ -40,7 +40,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     }
 
     fun correctTimeSong(time: String?) {
-        _timeSomg.value = SimpleDateFormat("mm:ss", Locale.getDefault()).format(time?.toInt())
+        _timeSong.value = SimpleDateFormat("mm:ss", Locale.getDefault()).format(time?.toInt())
     }
 
     fun preparePlayer(urlTrack: String) {
@@ -71,4 +71,6 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     override fun onTimeUpdate(time: String) {
         _secondCounter.value = time
     }
+
+
 }

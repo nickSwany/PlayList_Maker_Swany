@@ -2,9 +2,12 @@ package com.example.plmarket
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.plmarket.search.dataSearchModule
-import com.example.plmarket.search.domainSearchModule
-import com.example.plmarket.search.viewSearchViewModel
+import com.example.plmarket.player.di.dataPlayerModule
+import com.example.plmarket.player.di.domainPlayerModule
+import com.example.plmarket.player.di.viewPlayerModelModule
+import com.example.plmarket.search.di.dataSearchModule
+import com.example.plmarket.search.di.domainSearchModule
+import com.example.plmarket.search.di.viewSearchViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -27,12 +30,13 @@ class App : Application() {
 
             modules(
                 listOf(
-                    dataSearchModule, domainSearchModule, viewSearchViewModel
+                    viewSearchViewModel,
+                    viewPlayerModelModule,
+                    dataPlayerModule, domainPlayerModule,
+                    domainSearchModule, dataSearchModule
                 )
             )
         }
-
-
     }
 
     fun switch_Theme(switchTheme: Boolean) {

@@ -8,11 +8,12 @@ import com.example.plmarket.player.domain.models.Track
 
 class HistoryAdapter(private val clickListener: TrackClickListener) :
     RecyclerView.Adapter<TrackViewHolder>() {
+
     var trackListHistory = ArrayList<Track>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_item, parent, false)
-        return TrackViewHolder(view as ViewGroup)
+        return TrackViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
@@ -21,5 +22,4 @@ class HistoryAdapter(private val clickListener: TrackClickListener) :
     }
 
     override fun getItemCount(): Int = trackListHistory.size
-
 }
