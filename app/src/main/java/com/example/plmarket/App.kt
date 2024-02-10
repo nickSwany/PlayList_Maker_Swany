@@ -2,6 +2,14 @@ package com.example.plmarket
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.plmarket.player.di.dataPlayerModule
+import com.example.plmarket.player.di.domainPlayerModule
+import com.example.plmarket.player.di.viewPlayerModelModule
+import com.example.plmarket.search.di.dataSearchModule
+import com.example.plmarket.search.di.domainSearchModule
+import com.example.plmarket.search.di.viewSearchViewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 const val THEME_PREFS = "theme_prefs"
 const val DARK_THEME = "dark_theme"
@@ -16,11 +24,24 @@ class App : Application() {
         switchOn = sharedPreferences.getBoolean(DARK_THEME, false)
 
         switch_Theme(switchOn)
+
+        startKoin {
+            androidContext(this@App)
+
+            modules(
+                listOf(
+                    viewSearchViewModel,
+                    viewPlayerModelModule,
+                    dataPlayerModule, domainPlayerModule,
+                    domainSearchModule, dataSearchModule
+                )
+            )
+        }
     }
 
     fun switch_Theme(switchTheme: Boolean) {
         AppCompatDelegate.setDefaultNightMode(
-            when (switchTheme){
+            when (switchTheme) {
                 true -> AppCompatDelegate.MODE_NIGHT_YES
                 false -> AppCompatDelegate.MODE_NIGHT_NO
             }

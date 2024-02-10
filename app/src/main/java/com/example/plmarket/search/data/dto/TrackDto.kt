@@ -1,11 +1,10 @@
-package com.example.plmarket.player.domain.models
+package com.example.plmarket.search.data.dto
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
-
 @Parcelize
-data class Track(
+data class TrackDto(
     val trackName: String?,
     val artistName: String?,
     val trackTimeMillis: String?,
