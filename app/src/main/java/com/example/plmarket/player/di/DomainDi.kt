@@ -5,6 +5,7 @@ import com.example.plmarket.player.domain.impl.PlayerInteractorImpl
 import org.koin.dsl.module
 
 val domainPlayerModule = module {
+
     factory<PlayerInteractor> {
         PlayerInteractorImpl(repository = get())
     }

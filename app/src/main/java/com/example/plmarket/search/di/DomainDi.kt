@@ -7,6 +7,7 @@ import com.example.plmarket.search.domain.TrackInteractor
 import org.koin.dsl.module
 
 val domainSearchModule = module {
+
     factory<TrackInteractor> {
         TrackInteractorImpl(repository = get())
     }

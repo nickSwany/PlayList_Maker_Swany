@@ -8,6 +8,9 @@ import com.example.plmarket.player.di.viewPlayerModelModule
 import com.example.plmarket.search.di.dataSearchModule
 import com.example.plmarket.search.di.domainSearchModule
 import com.example.plmarket.search.di.viewSearchViewModel
+import com.example.plmarket.settings.di.dataSettingsModule
+import com.example.plmarket.settings.di.domainSettingsModule
+import com.example.plmarket.settings.di.viewSettingsViewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -33,7 +36,8 @@ class App : Application() {
                     viewSearchViewModel,
                     viewPlayerModelModule,
                     dataPlayerModule, domainPlayerModule,
-                    domainSearchModule, dataSearchModule
+                    domainSearchModule, dataSearchModule,
+                    dataSettingsModule, domainSettingsModule, viewSettingsViewModelModule
                 )
             )
         }

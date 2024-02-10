@@ -43,9 +43,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val tracksSearch = ArrayList<Track>()
     private val tracksHistory = ArrayList<Track>()
-
     private val handler = Handler(Looper.getMainLooper())
-
     private val viewModel: SearchViewModel by viewModel()
 
     private var isClickAllowed = true

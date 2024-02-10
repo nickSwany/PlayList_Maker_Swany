@@ -9,6 +9,7 @@ import com.example.plmarket.search.domain.TrackRepository
 import org.koin.dsl.module
 
 val dataSearchModule = module {
+
     single<TrackRepository> {
         TrackRepositoryImpl(networkClient = get())
     }

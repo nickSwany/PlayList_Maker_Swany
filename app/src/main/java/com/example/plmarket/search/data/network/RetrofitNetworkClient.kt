@@ -28,17 +28,4 @@ class RetrofitNetworkClient : NetworkClient {
             Response().apply { resultCode = 400 }
         }
     }
-
-
-/*
-    override fun doRequest(dto: Any): Response {
-        return if (dto is TrackSearchRequest) {
-            val resp = apiService.searchTracks(dto.expression).execute()
-            Response(resultCode = resp.code())
-        } else {
-            Response(resultCode = 400)
-        }
-    }
-
- */
 }
