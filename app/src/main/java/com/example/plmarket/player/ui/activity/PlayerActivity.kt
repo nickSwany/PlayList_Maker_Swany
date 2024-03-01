@@ -33,7 +33,6 @@ class PlayerActivity : AppCompatActivity() {
     private var songurl: String = ""
     private val viewModel: PlayerViewModel by viewModel()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)

@@ -3,26 +3,23 @@ package com.example.plmarket.settings.ui.activity
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
 import com.example.pl_market.databinding.ActivitySettingsBinding
 import com.example.plmarket.App
 import com.example.plmarket.DARK_THEME
 import com.example.plmarket.THEME_PREFS
 import com.example.plmarket.settings.ui.viewModel.SettingsViewModel
-import com.example.plmarket.settings.ui.viewModel.SettingsViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var sharedPreferencesHistory: SharedPreferences
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel =
-            ViewModelProvider(this, SettingsViewModelFactory(this))[SettingsViewModel::class.java]
         binding.themeSwitch.isChecked = (applicationContext as App).switchOn
 
         binding.themeSwitch.setOnCheckedChangeListener { _, checked ->

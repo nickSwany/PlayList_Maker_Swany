@@ -5,6 +5,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewSearchViewModel = module {
+
     viewModel {
         SearchViewModel(interactorSearch = get(), interactorHistory = get())
     }
