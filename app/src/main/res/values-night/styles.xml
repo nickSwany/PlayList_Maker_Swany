@@ -93,10 +93,24 @@
     <style name="button_add">
         <item name="android:src">@drawable/dark_mode_button_add</item>
     </style>
+
     <style name="back">
         <item name="navigationIcon">@drawable/dark_mode_back</item>
     </style>
+
     <style name="button_theme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorOnSecondary">@color/white</item>
+    </style>
+
+    <style name="button_media_play_list">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+    <style name="tabLayout">
+        <item name="android:background">@color/dark_theme</item>
+        <item name="tabTextColor">@color/white</item>
+        <item name="tabIndicatorColor">@color/white</item>
     </style>
 </resources>
