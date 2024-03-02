@@ -20,7 +20,7 @@ class MediatecaActivity : AppCompatActivity() {
             finish()
         }
 
-binding.viewPager.adapter = MediatecaAdapter(supportFragmentManager, lifecycle)
+        binding.viewPager.adapter = MediaAdapter(supportFragmentManager, lifecycle)
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = getString(R.string.selected_tracks)

@@ -5,12 +5,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class MediatecaAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+const val MEDIA_TAB_SIZE = 2
+
+class MediaAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
-
     override fun getItemCount(): Int {
-        return 2
+        return MEDIA_TAB_SIZE
     }
 
     override fun createFragment(position: Int): Fragment {
