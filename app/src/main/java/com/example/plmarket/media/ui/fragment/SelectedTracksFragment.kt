@@ -1,31 +1,30 @@
-package com.example.plmarket.media
+package com.example.plmarket.media.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.pl_market.databinding.FragmentPlayListBinding
-import com.example.plmarket.media.view_model.PlayListViewModel
+import com.example.pl_market.databinding.FragmentSelectedTracksBinding
+import com.example.plmarket.media.ui.view_model.SelectedTracksViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlayListFragment : Fragment() {
-
+class SelectedTracksFragment : Fragment() {
     companion object {
-        fun newInstance() = PlayListFragment()
+        fun newInstance() = SelectedTracksFragment()
     }
 
-    private var _binding: FragmentPlayListBinding? = null
+    private  var _binding: FragmentSelectedTracksBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: PlayListViewModel by viewModel()
+    private val viewModel: SelectedTracksViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPlayListBinding.inflate(inflater)
+        _binding = FragmentSelectedTracksBinding.inflate(inflater)
         return binding.root
     }
 

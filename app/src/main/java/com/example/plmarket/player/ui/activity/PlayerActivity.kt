@@ -2,6 +2,7 @@ package com.example.plmarket.player.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -9,15 +10,15 @@ import com.example.pl_market.R
 import com.example.pl_market.databinding.ActivityPlayerBinding
 import com.example.plmarket.player.domain.StatePlayer
 import com.example.plmarket.player.ui.viewModel.PlayerViewModel
-import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_ARTIST_NAME
-import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_ART_TRACK
-import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_COUNTRY
-import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_COllECTION_NAME
-import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_GENRE_NAME
-import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_SONG
-import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_TIME_MILLIS
-import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_TRACK_NAME
-import com.example.plmarket.search.ui.activity.SearchActivity.Companion.EXTRA_YEAR
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_ARTIST_NAME
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_ART_TRACK
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_COUNTRY
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_COllECTION_NAME
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_GENRE_NAME
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_SONG
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_TIME_MILLIS
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_TRACK_NAME
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_YEAR
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +28,28 @@ class PlayerActivity : AppCompatActivity() {
 
     companion object {
         private const val DEFAULT_TIME_LEFT = "00:00"
+
+        fun createArgs(
+            trackName: String?,
+            artistName: String?,
+            trackTimeMillis: String?,
+            artworkUrl100: String?,
+            collectionName: String?,
+            releaseDate: String?,
+            primaryGenreName: String?,
+            country: String?,
+            previewUrl: String?
+        ): Bundle = bundleOf(
+            EXTRA_ARTIST_NAME to artistName,
+            EXTRA_COUNTRY to country,
+            EXTRA_COllECTION_NAME to collectionName,
+            EXTRA_SONG to previewUrl,
+            EXTRA_TIME_MILLIS to trackTimeMillis,
+            EXTRA_TRACK_NAME to trackName,
+            EXTRA_ART_TRACK to artworkUrl100,
+            EXTRA_YEAR to releaseDate,
+            EXTRA_GENRE_NAME to primaryGenreName,
+        )
     }
 
     private lateinit var binding: ActivityPlayerBinding

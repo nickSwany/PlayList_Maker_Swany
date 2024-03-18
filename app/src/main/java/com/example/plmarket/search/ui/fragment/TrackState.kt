@@ -1,4 +1,4 @@
-package com.example.plmarket.search.ui.activity
+package com.example.plmarket.search.ui.fragment
 
 import com.example.plmarket.player.domain.models.Track
 
