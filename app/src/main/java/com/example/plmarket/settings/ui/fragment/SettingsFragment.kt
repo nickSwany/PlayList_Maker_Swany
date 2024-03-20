@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import com.example.pl_market.databinding.FragmentSettingsBinding
 import com.example.plmarket.App
@@ -42,7 +43,9 @@ class SettingsFragment : Fragment() {
                 THEME_PREFS,
                 AppCompatActivity.MODE_PRIVATE
             )
-            sharedPreferencesHistory.edit().putBoolean(DARK_THEME, checked).apply()
+            sharedPreferencesHistory.edit {
+                putBoolean(DARK_THEME, checked)
+            }
         }
 
         binding.share.setOnClickListener {
@@ -54,6 +57,5 @@ class SettingsFragment : Fragment() {
         binding.userAgreement.setOnClickListener {
             viewModel.openUserAgreement()
         }
-
     }
 }
