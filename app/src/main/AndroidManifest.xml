@@ -14,21 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
         tools:targetApi="31">
-        <activity
-            android:name="com.example.plmarket.media.MediatecaActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.example.plmarket.search.ui.activity.SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.example.plmarket.settings.ui.activity.SettingsActivity"
-            android:exported="false" />
+
         <activity
             android:name="com.example.plmarket.player.ui.activity.PlayerActivity"
             android:exported="false" />
+
         <activity
-            android:name="com.example.plmarket.main.ui.activity.MainActivity"
-            android:exported="true">
+            android:name="com.example.plmarket.root.ui.RootActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustNothing">>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,5 +30,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

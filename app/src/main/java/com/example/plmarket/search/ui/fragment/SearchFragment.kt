@@ -1,19 +1,23 @@
-package com.example.plmarket.search.ui.activity
+package com.example.plmarket.search.ui.fragment
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pl_market.R
-import com.example.pl_market.databinding.ActivitySearchBinding
+import com.example.pl_market.databinding.FragmentSearchBinding
 import com.example.plmarket.player.domain.models.Track
 import com.example.plmarket.player.ui.activity.PlayerActivity
 import com.example.plmarket.search.ui.adapter.HistoryAdapter
@@ -21,7 +25,8 @@ import com.example.plmarket.search.ui.adapter.SearchAdapter
 import com.example.plmarket.search.ui.viewModel.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
+
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
@@ -37,7 +42,7 @@ class SearchActivity : AppCompatActivity() {
         const val EXTRA_SONG = "track_song"
     }
 
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: FragmentSearchBinding
     private var searchText: String = ""
     private var flag = false
 
@@ -60,29 +65,33 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         init()
 
         viewModel.addHistoryTracks(tracksHistory)
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
-        binding.back.setOnClickListener {
-            finish()
-        }
 
         binding.apply {
             cleanHistory.setOnClickListener {
                 viewModel.clearTrackListHistory(historyAdapter.trackListHistory)
             }
         }
-        viewModel.clearHistory.observe(this@SearchActivity) {
+        viewModel.clearHistory.observe(viewLifecycleOwner) {
             binding.cleanHistory.isVisible = false
             binding.youSearch.isVisible = false
         }
@@ -195,8 +204,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun hideKeyboard() {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        val imm =
+            requireContext().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
     }
 
     private fun visibleAll() {
@@ -224,9 +234,9 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(SEARCH_TEXT, textToSave)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val savedText = savedInstanceState.getString(SEARCH_TEXT)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        val savedText = savedInstanceState?.getString(SEARCH_TEXT)
         binding.searchEdittext.setText(savedText)
     }
 
@@ -236,11 +246,11 @@ class SearchActivity : AppCompatActivity() {
 
         binding.apply {
             rcViewHistory.layoutManager =
-                LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             rcViewHistory.adapter = searchAdapter
 
             RCSearchHistory.layoutManager =
-                LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             RCSearchHistory.adapter = historyAdapter
 
             if (tracksHistory.isEmpty()) {
@@ -253,7 +263,8 @@ class SearchActivity : AppCompatActivity() {
         super.onResume()
         if (!flag) {
             binding.searchEdittext.requestFocus()
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(binding.searchEdittext, InputMethodManager.SHOW_IMPLICIT)
             flag = true
         }
@@ -280,7 +291,24 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun openPlayerToIntent(track: Track) {
-        val intent = Intent(this, PlayerActivity::class.java)
+        /*
+        findNavController().navigate(
+            R.id.action_searchFragment_to_playerActivity,
+            PlayerActivity.createArgs(
+                track.trackName,
+                track.artistName,
+                track.trackTimeMillis,
+                track.artworkUrl100,
+                track.collectionName,
+                track.releaseDate,
+                track.country,
+                track.primaryGenreName,
+                track.previewUrl,
+            )
+        )
+        historyAdapter.notifyDataSetChanged()
+      */
+        val intent = Intent(requireContext(), PlayerActivity::class.java)
         intent.putExtra(EXTRA_TRACK_NAME, track.trackName)
         intent.putExtra(EXTRA_ARTIST_NAME, track.artistName)
         intent.putExtra(EXTRA_TIME_MILLIS, track.trackTimeMillis)

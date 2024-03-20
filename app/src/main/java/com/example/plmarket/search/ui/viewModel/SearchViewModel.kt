@@ -1,17 +1,15 @@
 package com.example.plmarket.search.ui.viewModel
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plmarket.player.domain.models.Track
 import com.example.plmarket.search.domain.TrackHistoryInteractor
 import com.example.plmarket.search.domain.TrackInteractor
-import com.example.plmarket.search.ui.activity.TrackState
+import com.example.plmarket.search.ui.fragment.TrackState
 
 class SearchViewModel(
     private val interactorHistory: TrackHistoryInteractor,

@@ -1,4 +1,4 @@
-package com.example.plmarket.media.view_model
+package com.example.plmarket.media.ui.view_model
 
 import androidx.lifecycle.ViewModel
 

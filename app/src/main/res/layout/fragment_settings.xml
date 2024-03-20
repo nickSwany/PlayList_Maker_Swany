@@ -6,24 +6,18 @@
     android:layout_height="match_parent"
     style="@style/back_settings"
     android:orientation="vertical"
-    tools:context=".SettingsActivity">
+    tools:context="com.example.plmarket.settings.ui.fragment.SettingsFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginEnd="52dp">
-
-        <Button
-            android:id="@+id/back"
-            style="@style/back_button"
-            android:contentDescription="@string/back" />
+        android:layout_height="56dp">
 
         <TextView
             style="@style/color_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="@dimen/otstyp_12"
+            android:layout_marginStart="@dimen/otstyp_12"
             android:fontFamily="@font/ys_display_medium"
             android:text="@string/settings"
             android:textFontWeight="500"
