@@ -8,5 +8,5 @@ interface PlayerInteractor {
     fun preparePlayer(url: String)
     fun releasePlayer()
     fun setListener(listener: PlayerListener)
-
+    fun getTime() : String
 }

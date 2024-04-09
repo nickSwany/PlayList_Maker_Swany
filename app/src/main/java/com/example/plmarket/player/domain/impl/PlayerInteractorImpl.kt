@@ -28,4 +28,8 @@ class PlayerInteractorImpl(private var repository: PlayerRepository) : PlayerInt
     override fun setListener(listener: PlayerListener) {
         repository.setupListener(listener)
     }
+
+    override fun getTime(): String {
+        return repository.getTime()
+    }
 }

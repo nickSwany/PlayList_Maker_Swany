@@ -3,6 +3,8 @@ package com.example.plmarket.search.data.network
 import com.example.plmarket.search.data.NetworkClient
 import com.example.plmarket.search.data.dto.Response
 import com.example.plmarket.search.data.dto.TrackSearchRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -18,14 +20,19 @@ class RetrofitNetworkClient : NetworkClient {
 
     private val apiService = retrofit.create(ApiService::class.java)
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
 
-        return if (dto is TrackSearchRequest) {
-            val resp = apiService.searchTracks(dto.expression).execute()
-            val body = resp.body() ?: Response()
-            body.apply { resultCode = resp.code() }
-        } else {
-            Response().apply { resultCode = 400 }
+        if (dto !is TrackSearchRequest) {
+            return Response().apply { resultCode = 400 }
+        }
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val resp = apiService.searchTracks(dto.expression)
+                return@withContext resp.apply { resultCode = 200 }
+            } catch (e: Throwable) {
+                Response().apply { resultCode = 500 }
+            }
         }
     }
 }
