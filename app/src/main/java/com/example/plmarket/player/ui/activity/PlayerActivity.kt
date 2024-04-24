@@ -28,28 +28,6 @@ class PlayerActivity : AppCompatActivity() {
 
     companion object {
         private const val DEFAULT_TIME_LEFT = "00:00"
-
-        fun createArgs(
-            trackName: String?,
-            artistName: String?,
-            trackTimeMillis: String?,
-            artworkUrl100: String?,
-            collectionName: String?,
-            releaseDate: String?,
-            primaryGenreName: String?,
-            country: String?,
-            previewUrl: String?
-        ): Bundle = bundleOf(
-            EXTRA_ARTIST_NAME to artistName,
-            EXTRA_COUNTRY to country,
-            EXTRA_COllECTION_NAME to collectionName,
-            EXTRA_SONG to previewUrl,
-            EXTRA_TIME_MILLIS to trackTimeMillis,
-            EXTRA_TRACK_NAME to trackName,
-            EXTRA_ART_TRACK to artworkUrl100,
-            EXTRA_YEAR to releaseDate,
-            EXTRA_GENRE_NAME to primaryGenreName,
-        )
     }
 
     private lateinit var binding: ActivityPlayerBinding
@@ -145,7 +123,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.onPause()
     }
 
-    fun getYearFromDatString(dataString: String): String? {
+    private fun getYearFromDatString(dataString: String): String? {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
         val data = inputFormat.parse(dataString)
         val outputFormat = SimpleDateFormat("yyyy", Locale.getDefault())

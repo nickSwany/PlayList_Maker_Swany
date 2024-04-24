@@ -1,11 +1,9 @@
 package com.example.plmarket.player.data
 
 import android.media.MediaPlayer
-import android.os.Looper
 import com.example.plmarket.player.domain.StatePlayer
 import com.example.plmarket.player.domain.api.PlayerListener
 import com.example.plmarket.player.domain.api.PlayerRepository
-import android.os.Handler
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,8 +17,8 @@ class PlayerRepositoryImpl : PlayerRepository {
     private var playerState = StatePlayer.STATE_DEFAULT
     private var time = DEFAULT_TIME_LEFT
 
-    val handler = Handler(Looper.getMainLooper())
-    val mediaPlayer = MediaPlayer()
+    //    val handler = Handler(Looper.getMainLooper())
+    private val mediaPlayer = MediaPlayer()
 
     override fun preparePlayer(url: String) {
         try {
@@ -64,7 +62,7 @@ class PlayerRepositoryImpl : PlayerRepository {
     override fun startPlayer() {
         playerState = StatePlayer.STATE_PLAYING
         mediaPlayer.start()
-        updateTime(time)
+//        updateTime(time)
         listener?.onStateUpdate(playerState)
     }
 
@@ -74,30 +72,36 @@ class PlayerRepositoryImpl : PlayerRepository {
         listener?.onStateUpdate(playerState)
     }
 
-    override fun updateTime(time: String) {
-        this.time = time
-
-        handler.postDelayed(
-            object : Runnable {
-                override fun run() {
-                    if (playerState == StatePlayer.STATE_PLAYING) {
-                        this@PlayerRepositoryImpl.time = SimpleDateFormat(
-                            "mm:ss",
-                            Locale.getDefault()
-                        ).format(mediaPlayer.currentPosition)
-                        listener?.onTimeUpdate(this@PlayerRepositoryImpl.time)
-                        handler.postDelayed(
-                            this,
-                            DELAY,
-                        )
-                    }
-                }
-            },
-            DELAY
-        )
-    }
+//    override fun updateTime(time: String) {
+//        this.time = time
+//
+//        handler.postDelayed(
+//            object : Runnable {
+//                override fun run() {
+//                    if (playerState == StatePlayer.STATE_PLAYING) {
+//                        this@PlayerRepositoryImpl.time = SimpleDateFormat(
+//                            "mm:ss",
+//                            Locale.getDefault()
+//                        ).format(mediaPlayer.currentPosition)
+//                        listener?.onTimeUpdate(this@PlayerRepositoryImpl.time)
+//                        handler.postDelayed(
+//                            this,
+//                            DELAY,
+//                        )
+//                    }
+//                }
+//            },
+//            DELAY
+//        )
+//    }
 
     override fun setupListener(listener: PlayerListener) {
         this.listener = listener
+    }
+
+    override fun getTime(): String {
+        time = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+            ?: DEFAULT_TIME_LEFT
+        return time
     }
 }
