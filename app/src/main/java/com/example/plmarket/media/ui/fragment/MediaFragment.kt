@@ -7,24 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.pl_market.R
 import com.example.pl_market.databinding.FragmentMediatecaBinding
-import com.example.plmarket.media.MediaAdapter
+import com.example.plmarket.media.ui.adapter.MediaAdapter
+import com.example.plmarket.media.ui.view_model.FavoriteTracksViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaFragment : Fragment() {
-/*
-    companion object {
-        private const val ARGS_PLAYLIST = "playlist"
-        private const val ARGS_SELECTED_TRSCKS = "selectedt_racks"
-
-        const val TAG = "MediaFragment"
-
-        fun newIntance()
-    }
-
- */
 
     private lateinit var binding: FragmentMediatecaBinding
     private lateinit var tabMediator: TabLayoutMediator
+    private val viewModel: FavoriteTracksViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,

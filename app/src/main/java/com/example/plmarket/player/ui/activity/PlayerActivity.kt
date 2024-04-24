@@ -2,23 +2,27 @@ package com.example.plmarket.player.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.pl_market.R
 import com.example.pl_market.databinding.ActivityPlayerBinding
 import com.example.plmarket.player.domain.StatePlayer
+import com.example.plmarket.player.domain.models.Track
 import com.example.plmarket.player.ui.viewModel.PlayerViewModel
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_ARTIST_NAME
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_ART_TRACK
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_COUNTRY
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_COllECTION_NAME
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_GENRE_NAME
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_LIKE
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_SONG
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_TIME_MILLIS
+import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_TRACK
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_TRACK_NAME
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_YEAR
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,7 +35,8 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityPlayerBinding
-    private var songurl: String = ""
+    private var songurl = ""
+    private var isLiked = false
     private val viewModel: PlayerViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,8 +64,9 @@ class PlayerActivity : AppCompatActivity() {
             groupName.text = intent.getStringExtra(EXTRA_ARTIST_NAME)
             countryText.text = intent.getStringExtra(EXTRA_COUNTRY)
             genreText.text = intent.getStringExtra(EXTRA_GENRE_NAME)
+            isLiked = intent.getBooleanExtra(EXTRA_LIKE, false)
             yearNumber.text = getYearFromDatString(intent.getStringExtra(EXTRA_YEAR) ?: "")
-            binding.timeLeft.text = DEFAULT_TIME_LEFT
+            timeLeft.text = DEFAULT_TIME_LEFT
             durationTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(
                 intent.getStringExtra(
                     EXTRA_TIME_MILLIS
@@ -113,8 +119,32 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.secondCounter.observe(this) { time ->
-            binding.timeLeft.text = time
+        val track = intent.getParcelableExtra<Track>(EXTRA_TRACK)
+
+        if (track != null) {
+            viewModel.checkLike(track.trackId)
+        }
+
+        viewModel.secondCounter.observe(this) {
+            binding.timeLeft.text = it
+        }
+
+        binding.buttonLike.setOnClickListener {
+            lifecycleScope.launch {
+                if (track != null) {
+                    viewModel.addFavoriteTrack(track)
+                }
+            }
+        }
+
+        viewModel.likeState.observe(this) { isLiked ->
+            if (isLiked) {
+                binding.buttonLike.setImageResource(R.drawable.button_like_true)
+                track!!.isFavorite = isLiked
+            } else {
+                binding.buttonLike.setImageResource(R.drawable.button_like)
+                track!!.isFavorite = isLiked
+            }
         }
     }
 

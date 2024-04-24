@@ -1,21 +1,27 @@
 package com.example.plmarket.player.ui.viewModel
 
-import android.media.MediaPlayer
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.plmarket.media.domain.FavoriteListener
+import com.example.plmarket.media.domain.db.FavoriteInteractor
 import com.example.plmarket.player.domain.StatePlayer
 import com.example.plmarket.player.domain.api.PlayerInteractor
 import com.example.plmarket.player.domain.api.PlayerListener
+import com.example.plmarket.player.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel(),
-    PlayerListener {
+class PlayerViewModel(
+    private val playerInteractor: PlayerInteractor,
+    private val favoriteInteractor: FavoriteInteractor
+) : ViewModel(),
+    PlayerListener, FavoriteListener {
 
     companion object {
         const val DEFAULT_TIME_FOR_TRACK = "00:00"
@@ -42,6 +48,9 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     private val _coverArtwork = MutableLiveData<String>()
     val coverArtwork: LiveData<String> = _coverArtwork
+
+    private val _likeState = MutableLiveData<Boolean>()
+    val likeState: LiveData<Boolean> = _likeState
 
     fun getCoverArtwork(artworkUrl100: String?) {
         _coverArtwork.value = artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
@@ -76,31 +85,36 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     private fun listen() {
         playerInteractor.setListener(this)
+        favoriteInteractor.setListener(this)
     }
 
     override fun onStateUpdate(state: StatePlayer) {
         _checkState.value = state
     }
 
-//    override fun onTimeUpdate(time: String) {
-//        _secondCounter.value = time
-//    }
-
     private fun startTimer() {
-        /*
-        Можно, конечно, было оставить название onTimeUpdate, но решил взять другое.
-        Пришлось практически всю логику вынести сюда, в репозитории не работали корутины.
-        Если использовать PlayerState, то в репозитори в методе preparePlayer будут появляться ошибки, как их исправить не разобрался
-        Поэтому пришлось оставить старый класс StatePlayer и уже работать с ним
-         */
         timerJob = viewModelScope.launch {
-            while(_checkState.value == StatePlayer.STATE_PLAYING){
+            while (_checkState.value == StatePlayer.STATE_PLAYING) {
                 delay(UPDATE_STATUS_PLAYER)
                 _secondCounter.value = playerInteractor.getTime()
             }
-            if(_checkState.value == StatePlayer.STATE_PREPARED) {
+            if (_checkState.value == StatePlayer.STATE_PREPARED) {
                 _secondCounter.value = DEFAULT_TIME_FOR_TRACK
             }
         }
+    }
+
+    suspend fun addFavoriteTrack(track: Track) {
+        favoriteInteractor.addFavoriteTrack(track)
+    }
+
+    fun checkLike(trackId: String) {
+        viewModelScope.launch {
+            _likeState.value = favoriteInteractor.checkLikeTrack(trackId)
+        }
+    }
+
+    override fun onFavoriteUpdate(isLiked: Boolean) {
+        _likeState.value = isLiked
     }
 }
