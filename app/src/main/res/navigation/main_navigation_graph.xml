@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mediaFragment_to_playerActivity"
             app:destination="@id/playerActivity" />
+        <action
+            android:id="@+id/action_mediaFragment_to_fragmentNewPlayList"
+            app:destination="@id/fragmentNewPlayList" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -34,8 +37,8 @@
         android:label="activity_player"
         tools:layout="@layout/activity_player" />
     <fragment
-        android:id="@+id/selectedTracksFragment"
-        android:name="com.example.plmarket.media.ui.fragment.SelectedTracksFragment"
-        android:label="fragment_selected_tracks"
-        tools:layout="@layout/fragment_selected_tracks" />
+        android:id="@+id/fragmentNewPlayList"
+        android:name="com.example.plmarket.media.ui.fragment.FragmentNewPlayList"
+        android:label="fragment_new_play_list"
+        tools:layout="@layout/fragment_new_play_list" />
 </navigation>

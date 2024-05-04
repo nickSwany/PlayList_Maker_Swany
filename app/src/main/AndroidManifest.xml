@@ -22,7 +22,7 @@
         <activity
             android:name="com.example.plmarket.root.ui.RootActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing">>
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
