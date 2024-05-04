@@ -3,8 +3,6 @@ package com.example.plmarket.search.ui.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pl_market.R
 import com.example.pl_market.databinding.FragmentSearchBinding
@@ -32,7 +29,7 @@ class SearchFragment : Fragment() {
 
 
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val SEARCH_TEXT = "SEARCH_TEXT"
         const val EXTRA_TRACK_NAME = "trackName"
         const val EXTRA_ARTIST_NAME = "artistName"
@@ -43,6 +40,9 @@ class SearchFragment : Fragment() {
         const val EXTRA_GENRE_NAME = "genreName"
         const val EXTRA_COllECTION_NAME = "collectionName"
         const val EXTRA_SONG = "track_song"
+        const val EXTRA_LIKE = "track_like"
+        const val EXTRA_ID = "track_id"
+        const val EXTRA_TRACK = "track_track"
     }
 
     private lateinit var binding: FragmentSearchBinding
@@ -166,6 +166,7 @@ class SearchFragment : Fragment() {
             placeholderMessageNotInternet.isVisible = false
             placeholderMessage.isVisible = false
             massageNotInternet.isVisible = false
+            LLSearchHistory.isVisible = false
         }
     }
 
@@ -324,6 +325,9 @@ class SearchFragment : Fragment() {
         intent.putExtra(EXTRA_GENRE_NAME, track.primaryGenreName)
         intent.putExtra(EXTRA_COUNTRY, track.country)
         intent.putExtra(EXTRA_SONG, track.previewUrl)
+        intent.putExtra(EXTRA_LIKE, track.isFavorite)
+        intent.putExtra(EXTRA_ID, track.trackId)
+        intent.putExtra(EXTRA_TRACK, track)
         startActivity(intent)
         historyAdapter.notifyDataSetChanged()
     }

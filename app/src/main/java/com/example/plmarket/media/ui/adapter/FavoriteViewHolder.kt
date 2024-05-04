@@ -1,4 +1,4 @@
-package com.example.plmarket.search.ui.adapter
+package com.example.plmarket.media.ui.adapter
 
 import android.content.Context
 import android.util.TypedValue
@@ -6,14 +6,15 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.plmarket.player.domain.models.Track
-import java.text.SimpleDateFormat
 import com.bumptech.glide.request.RequestOptions
 import com.example.pl_market.R
 import com.example.pl_market.databinding.CardItemBinding
+import com.example.plmarket.player.domain.models.Track
+import java.text.SimpleDateFormat
 import java.util.*
 
-class TrackViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
+class FavoriteViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
+
     private val binding = CardItemBinding.bind(parent)
 
     private fun dpToPx(dp: Float, context: Context): Int {
@@ -26,16 +27,20 @@ class TrackViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
 
     fun bind(track: Track) = with(binding) {
 
-        Glide.with(itemView)
-            .load(track.artworkUrl100)
+        val requestOptions = RequestOptions()
             .placeholder(R.drawable.error_paint_internet)
             .centerCrop()
             .transform(RoundedCorners(dpToPx(2f, itemView.context)))
+
+        Glide.with(itemView)
+            .load(track.artworkUrl100)
+            .apply(requestOptions)
+            .placeholder(R.drawable.error_paint_internet)
             .into(imageMusicSearch)
 
-        binding.nameText.text = track.trackName
-        binding.textArtists.text = track.artistName
-        binding.timeMusicText.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis!!.toInt())
+        nameText.text = track.trackName
+        textArtists.text = track.artistName
+        timeMusicText.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis?.toInt())
     }
 }

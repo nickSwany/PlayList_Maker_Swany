@@ -1,11 +1,11 @@
-package com.example.plmarket.player.domain.models
+package com.example.plmarket.media.data.db.entity
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-
-@Parcelize
-data class Track(
+@Entity(tableName = "track_table")
+data class TrackEntity(
+    @PrimaryKey
     val trackId: String,
     val trackName: String?,
     val artistName: String?,
@@ -16,5 +16,5 @@ data class Track(
     val primaryGenreName: String?,
     val country: String?,
     val previewUrl: String?,
-    var isFavorite: Boolean = false,
-) : Parcelable
+    val isFavorite: Boolean,
+)

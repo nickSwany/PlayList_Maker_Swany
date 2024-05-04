@@ -2,6 +2,10 @@ package com.example.plmarket
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.plmarket.media.di.dataModule
+import com.example.plmarket.media.di.interactorFavoriteModule
+import com.example.plmarket.media.di.repositoryMediaModule
+import com.example.plmarket.media.di.viewMediaViewModel
 import com.example.plmarket.player.di.dataPlayerModule
 import com.example.plmarket.player.di.domainPlayerModule
 import com.example.plmarket.player.di.viewPlayerModelModule
@@ -35,9 +39,17 @@ class App : Application() {
                 listOf(
                     viewSearchViewModel,
                     viewPlayerModelModule,
-                    dataPlayerModule, domainPlayerModule,
-                    domainSearchModule, dataSearchModule,
-                    dataSettingsModule, domainSettingsModule, viewSettingsViewModelModule
+                    dataPlayerModule,
+                    domainPlayerModule,
+                    domainSearchModule,
+                    dataSearchModule,
+                    dataSettingsModule,
+                    domainSettingsModule,
+                    viewSettingsViewModelModule,
+                    dataModule,
+                    repositoryMediaModule,
+                    interactorFavoriteModule,
+                    viewMediaViewModel,
                 )
             )
         }

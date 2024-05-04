@@ -1,4 +1,4 @@
-package com.example.plmarket.media
+package com.example.plmarket.media.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
