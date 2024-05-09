@@ -38,7 +38,7 @@
         tools:layout="@layout/activity_player" />
     <fragment
         android:id="@+id/fragmentNewPlayList"
-        android:name="com.example.plmarket.media.ui.fragment.FragmentNewPlayList"
+        android:name="com.example.plmarket.media.ui.fragment.NewPlayListFragment"
         android:label="fragment_new_play_list"
         tools:layout="@layout/fragment_new_play_list" />
 </navigation>

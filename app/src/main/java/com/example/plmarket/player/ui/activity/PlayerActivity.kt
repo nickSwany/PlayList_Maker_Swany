@@ -1,6 +1,7 @@
 package com.example.plmarket.player.ui.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +23,7 @@ import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_TI
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_TRACK
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_TRACK_NAME
 import com.example.plmarket.search.ui.fragment.SearchFragment.Companion.EXTRA_YEAR
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -38,6 +40,7 @@ class PlayerActivity : AppCompatActivity() {
     private var songurl = ""
     private var isLiked = false
     private val viewModel: PlayerViewModel by viewModel()
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*> //<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +75,6 @@ class PlayerActivity : AppCompatActivity() {
                     EXTRA_TIME_MILLIS
                 )?.toInt() ?: return
             )
-
 
             val albumText = intent.getStringExtra(EXTRA_COllECTION_NAME)
             if (albumText != null) {
@@ -146,7 +148,36 @@ class PlayerActivity : AppCompatActivity() {
                 track!!.isFavorite = isLiked
             }
         }
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+//            binding.overlay.isVisible = false
+//            if (state == BottomSheetBehavior.STATE_HIDDEN) {
+//                binding.overlay.isVisible = true
+//            }
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.isVisible = false
+                    }
+                    else -> {
+                        binding.overlay.isVisible = true
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.overlay.alpha = slideOffset
+            }
+        })
     }
+
+
 
     override fun onPause() {
         super.onPause()
@@ -174,4 +205,6 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
     }
+
+
 }
