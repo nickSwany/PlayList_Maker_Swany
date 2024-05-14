@@ -1,7 +1,6 @@
 package com.example.plmarket.search.ui.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +12,12 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pl_market.R
 import com.example.pl_market.databinding.FragmentSearchBinding
 import com.example.plmarket.player.domain.models.Track
-import com.example.plmarket.player.ui.activity.PlayerActivity
+import com.example.plmarket.player.ui.fragment.PlayerFragment
 import com.example.plmarket.search.ui.adapter.HistoryAdapter
 import com.example.plmarket.search.ui.adapter.SearchAdapter
 import com.example.plmarket.search.ui.viewModel.SearchViewModel
@@ -142,6 +142,7 @@ class SearchFragment : Fragment() {
                 changedText = it?.toString() ?: ""
             )
             searchAdapter.notifyDataSetChanged()
+
 
             if (searchText.isNotEmpty()) {
                 binding.LLSearchHistory.isVisible = false
@@ -298,11 +299,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun openPlayerToIntent(track: Track) {
-        /*
         findNavController().navigate(
-            R.id.action_searchFragment_to_playerActivity,
-            PlayerActivity.createArgs(
-                track.trackName,
+            R.id.action_searchFragment_to_playerFragment2,
+            PlayerFragment.createArgs(
+                track.trackId,
+                track.trackName.toString(),
                 track.artistName,
                 track.trackTimeMillis,
                 track.artworkUrl100,
@@ -311,24 +312,9 @@ class SearchFragment : Fragment() {
                 track.country,
                 track.primaryGenreName,
                 track.previewUrl,
+                track.isFavorite,
+                track
             )
         )
-        historyAdapter.notifyDataSetChanged()
-      */
-        val intent = Intent(requireContext(), PlayerActivity::class.java)
-        intent.putExtra(EXTRA_TRACK_NAME, track.trackName)
-        intent.putExtra(EXTRA_ARTIST_NAME, track.artistName)
-        intent.putExtra(EXTRA_TIME_MILLIS, track.trackTimeMillis)
-        intent.putExtra(EXTRA_ART_TRACK, track.artworkUrl100)
-        intent.putExtra(EXTRA_YEAR, track.releaseDate)
-        intent.putExtra(EXTRA_COllECTION_NAME, track.collectionName)
-        intent.putExtra(EXTRA_GENRE_NAME, track.primaryGenreName)
-        intent.putExtra(EXTRA_COUNTRY, track.country)
-        intent.putExtra(EXTRA_SONG, track.previewUrl)
-        intent.putExtra(EXTRA_LIKE, track.isFavorite)
-        intent.putExtra(EXTRA_ID, track.trackId)
-        intent.putExtra(EXTRA_TRACK, track)
-        startActivity(intent)
-        historyAdapter.notifyDataSetChanged()
     }
 }

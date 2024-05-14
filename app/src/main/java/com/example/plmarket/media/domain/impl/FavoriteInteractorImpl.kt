@@ -1,6 +1,6 @@
 package com.example.plmarket.media.domain.impl
 
-import com.example.plmarket.media.data.repository.FavoriteRepository
+import com.example.plmarket.media.domain.repository.FavoriteRepository
 import com.example.plmarket.media.domain.FavoriteListener
 import com.example.plmarket.media.domain.db.FavoriteInteractor
 import com.example.plmarket.player.domain.models.Track

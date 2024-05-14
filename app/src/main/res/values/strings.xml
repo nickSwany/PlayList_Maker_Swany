@@ -38,6 +38,11 @@
     <string name="empty_mediateca">Ваша медиатека пуста</string>
     <string name="selected_tracks">Избранные треки</string>
     <string name="playList">Плейлисты</string>
+    <string name="new_play_list">Новый плейлист</string>
+    <string name="create">Создать</string>
+    <string name="add_to_playList">Добавить в плейлист</string>
+    <string name="name">Название*</string>
+    <string name="description">Описание</string>
 
 
 </resources>

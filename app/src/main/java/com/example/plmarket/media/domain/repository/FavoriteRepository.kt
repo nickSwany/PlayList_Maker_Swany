@@ -1,4 +1,4 @@
-package com.example.plmarket.media.data.repository
+package com.example.plmarket.media.domain.repository
 
 import com.example.plmarket.media.domain.FavoriteListener
 import com.example.plmarket.player.domain.models.Track

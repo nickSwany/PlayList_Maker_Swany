@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.plmarket.media.domain.FavoriteListener
 import com.example.plmarket.media.domain.db.FavoriteInteractor
+import com.example.plmarket.media.domain.db.PlayListInteractor
+import com.example.plmarket.media.domain.module.PlayList
+import com.example.plmarket.media.ui.PlayListState
 import com.example.plmarket.player.domain.StatePlayer
 import com.example.plmarket.player.domain.api.PlayerInteractor
 import com.example.plmarket.player.domain.api.PlayerListener
@@ -19,7 +22,8 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
-    private val favoriteInteractor: FavoriteInteractor
+    private val favoriteInteractor: FavoriteInteractor,
+    private val playListInteractor: PlayListInteractor
 ) : ViewModel(),
     PlayerListener, FavoriteListener {
 
@@ -51,6 +55,12 @@ class PlayerViewModel(
 
     private val _likeState = MutableLiveData<Boolean>()
     val likeState: LiveData<Boolean> = _likeState
+
+    private val _playListState = MutableLiveData<Boolean>()
+    val playListState: LiveData<Boolean> = _playListState
+
+    private val statePlayList = MutableLiveData<PlayListState>()
+    fun observeStatePlayList(): LiveData<PlayListState> = statePlayList
 
     fun getCoverArtwork(artworkUrl100: String?) {
         _coverArtwork.value = artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
@@ -116,5 +126,29 @@ class PlayerViewModel(
 
     override fun onFavoriteUpdate(isLiked: Boolean) {
         _likeState.value = isLiked
+    }
+
+    fun fillData() {
+        statePlayList.postValue(PlayListState.Loading)
+
+        viewModelScope.launch {
+            playListInteractor.getPlayList().collect() {
+                processResult(it)
+            }
+        }
+    }
+
+    private fun processResult(playList: List<PlayList>) {
+        if (playList.isEmpty()) {
+            statePlayList.postValue(PlayListState.Empty)
+        } else {
+            statePlayList.postValue(PlayListState.Content(playList))
+        }
+    }
+
+    fun addTrackToPlayList(track: Track, playList: PlayList) {
+        viewModelScope.launch {
+            _playListState.postValue(playListInteractor.addTrackPlayList(track, playList))
+        }
     }
 }
