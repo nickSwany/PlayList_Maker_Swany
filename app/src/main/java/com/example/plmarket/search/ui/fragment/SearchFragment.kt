@@ -2,14 +2,13 @@ package com.example.plmarket.search.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -27,10 +26,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
-
     companion object {
         const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val SEARCH_TEXT = "SEARCH_TEXT"
+        private const val TRACK_TEXT = "TRACK_TEXT"
         const val EXTRA_TRACK_NAME = "trackName"
         const val EXTRA_ARTIST_NAME = "artistName"
         const val EXTRA_TIME_MILLIS = "timeMillis"
@@ -45,14 +44,11 @@ class SearchFragment : Fragment() {
         const val EXTRA_TRACK = "track_track"
     }
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    val binding get() = _binding!!
     private var searchText: String = ""
-    private var flag = false
 
-    private val tracksSearch = ArrayList<Track>()
-    private val tracksHistory = ArrayList<Track>()
 
-    //    private val handler = Handler(Looper.getMainLooper())
     private val viewModel: SearchViewModel by viewModel()
 
     private var isClickAllowed = true
@@ -74,7 +70,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -83,71 +79,59 @@ class SearchFragment : Fragment() {
 
         init()
 
-        viewModel.addHistoryTracks(tracksHistory)
-
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
-
         binding.apply {
             cleanHistory.setOnClickListener {
-                viewModel.clearTrackListHistory(historyAdapter.trackListHistory)
+                viewModel.clearTrackListHistory()
+                binding.LLSearchHistory.isVisible = false
+                historyAdapter.notifyDataSetChanged()
             }
         }
         viewModel.clearHistory.observe(viewLifecycleOwner) {
-            binding.cleanHistory.isVisible = false
-            binding.youSearch.isVisible = false
+            binding.LLSearchHistory.isVisible = false
+            historyAdapter.notifyDataSetChanged()
         }
-
 
         binding.apply {
             clean.setOnClickListener {
-                tracksSearch.clear()
-                binding.searchEdittext.setText("")
-                searchEdittext.clearFocus()
+                viewModel.clear()
                 visibleAll()
                 hideKeyboard()
-                searchAdapter.notifyDataSetChanged()
+                LLSearchHistory.isVisible = true
                 historyAdapter.notifyDataSetChanged()
             }
 
             searchEdittext.setOnFocusChangeListener { _, hasFocus ->
-                LLSearchHistory.visibility =
-                    if (hasFocus && searchEdittext.text.isEmpty() &&
-                        tracksHistory.isNotEmpty()
-                    ) View.VISIBLE else View.GONE
+                LLSearchHistory.isVisible =
+                    hasFocus && searchEdittext.text.isEmpty() &&
+                            historyAdapter.trackListHistory.isNotEmpty()
 
-                if (!hasFocus) viewModel.addHistoryList(historyAdapter.trackListHistory)
-            }
-
-            searchEdittext.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    viewModel.searchRequest(searchEdittext.text.toString())
-                    true
-                } else {
-                    false
-                }
             }
         }
+
 
         binding.RestartSearch.setOnClickListener {
             binding.massageNotInternet.isVisible = false
             viewModel.searchRequest(binding.searchEdittext.text.toString())
         }
 
-        binding.searchEdittext.addTextChangedListener {
-            binding.clean.isVisible = clearButtonVisibility(it)
-            viewModel.searchDebounce(
-                changedText = it?.toString() ?: ""
-            )
-            searchAdapter.notifyDataSetChanged()
+        val simpleTextWatcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
 
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            if (searchText.isNotEmpty()) {
-                binding.LLSearchHistory.isVisible = false
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.clean.isVisible = clearButtonVisibility(s)
+                viewModel.searchDebounce(
+                    changedText = s?.toString() ?: " "
+                )
             }
         }
+
+        binding.searchEdittext.addTextChangedListener(simpleTextWatcher)
     }
 
     private fun render(state: TrackState) {
@@ -156,6 +140,8 @@ class SearchFragment : Fragment() {
             is TrackState.Error -> showError()
             is TrackState.Empty -> showEmpty()
             is TrackState.Content -> showContent(state.tracks)
+            is TrackState.SearchHistory -> showSearchHistory(state.tracks)
+            is TrackState.Default -> showDefault()
         }
     }
 
@@ -206,13 +192,43 @@ class SearchFragment : Fragment() {
         searchAdapter.trackList.clear()
         searchAdapter.trackList.addAll(track)
         hideKeyboard()
-        searchAdapter.notifyDataSetChanged()
+    }
+
+    private fun showSearchHistory(track: List<Track>) {
+        binding.apply {
+            historyAdapter.trackListHistory.clear()
+            historyAdapter.trackListHistory.addAll(track)
+            rcViewHistory.isVisible = false
+            messageNotFound.isVisible = false
+            massageNotInternet.isVisible = false
+            if (track.isNotEmpty() && searchEdittext.text.isEmpty() && searchEdittext.isActivated) {
+                LLSearchHistory.isVisible = true
+                searchAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun showDefault() {
+        binding.apply {
+            searchEdittext.setText("")
+            hideKeyboard()
+            searchEdittext.clearFocus()
+            progressBar.isVisible = false
+            massageNotInternet.isVisible = false
+            messageNotFound.isVisible = false
+            LLSearchHistory.isVisible = false
+            searchAdapter.trackList.clear()
+            if (historyAdapter.trackListHistory.isNotEmpty()) {
+                LLSearchHistory.isVisible = true
+            }
+            historyAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun hideKeyboard() {
         val imm =
-            requireContext().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
+            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.searchEdittext.windowToken, 0)
     }
 
     private fun visibleAll() {
@@ -236,19 +252,17 @@ class SearchFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val textToSave = binding.searchEdittext.text.toString()
-        outState.putString(SEARCH_TEXT, textToSave)
+        outState.putString(SEARCH_TEXT, searchText)
+        outState.putParcelableArrayList(TRACK_TEXT, searchAdapter.trackList)
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        val savedText = savedInstanceState?.getString(SEARCH_TEXT)
-        binding.searchEdittext.setText(savedText)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        binding.searchEdittext.setText(savedInstanceState?.getString(SEARCH_TEXT, ""))
+        val trackSave = savedInstanceState?.getParcelableArrayList<Track>(TRACK_TEXT)
     }
 
     private fun init() {
-        searchAdapter.trackList = tracksSearch
-        historyAdapter.trackListHistory = tracksHistory
 
         binding.apply {
             rcViewHistory.layoutManager =
@@ -258,27 +272,17 @@ class SearchFragment : Fragment() {
             RCSearchHistory.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             RCSearchHistory.adapter = historyAdapter
-
-            if (tracksHistory.isEmpty()) {
-                LLSearchHistory.isVisible = true
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (!flag) {
-            binding.searchEdittext.requestFocus()
-            val imm =
-                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(binding.searchEdittext, InputMethodManager.SHOW_IMPLICIT)
-            flag = true
         }
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.addHistoryList(historyAdapter.trackListHistory)
+        if (binding.searchEdittext.text.isEmpty()) viewModel.clear()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun clickDebounce(): Boolean {
@@ -294,7 +298,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun openPlayer(track: Track) {
-        viewModel.addHistoryTrack(track)
+        viewModel.saveTrack(track)
         openPlayerToIntent(track)
     }
 

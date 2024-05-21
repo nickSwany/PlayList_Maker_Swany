@@ -13,7 +13,7 @@ import com.example.plmarket.media.data.db.entity.TrackPlayListEntity
 
 
 @Database(
-    version = 6,
+    version = 1,
     entities = [TrackEntity::class,
         PlayListEntity::class,
         TrackPlayListEntity::class,

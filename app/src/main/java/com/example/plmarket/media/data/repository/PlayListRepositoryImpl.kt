@@ -20,6 +20,9 @@ class PlayListRepositoryImpl(
 
     override fun getPlayList(): Flow<List<PlayList>> = flow {
         val playList = playListConvector(database.playListDao().getPlayLists())
+        playList.map {
+            it.currentTracks = getTrackForPlayListCount(it)
+        }
         emit(playList)
     }
 
@@ -80,5 +83,17 @@ class PlayListRepositoryImpl(
     private fun playListConvertorEntity(playList: PlayList): PlayListEntity {
 
         return playListConvertor.map(playList)
+    }
+    override suspend fun getTracksForPlayList(playList: Int): Flow<List<Track>> = flow {
+        val tracks = database.playListDao().getTracksByPlayList(playList)
+        emit(trackConvectorTracks(tracks))
+    }
+
+    override suspend fun getTrackForPlayListCount(playList: PlayList): Int {
+        return database.playListDao().getTracksByPlayList(playList.playListId).size
+    }
+
+    private fun trackConvectorTracks(tracks: List<TrackPlayListEntity>): List<Track> {
+        return tracks.map { tracks -> playListConvertor.map(tracks) }
     }
 }

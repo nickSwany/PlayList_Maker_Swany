@@ -108,8 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible"
-            >
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/you_search"
@@ -127,15 +126,16 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RC_searchHistory"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="8"
                 tools:listitem="@layout/card_item" />
 
             <Button
                 android:id="@+id/clean_history"
-                style="@style/delete_history" />
+                style="@style/delete_history"
+                android:visibility="visible"/>
 
         </LinearLayout>
 

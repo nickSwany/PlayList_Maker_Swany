@@ -22,7 +22,15 @@ class PlayerPlayListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             .into(imageMusic)
 
         textPlayList.text = playList.name
-        countTrack.text = playList.currentTracks.toString()
+        countTrack.text =
+            playList.currentTracks.toString() + " " + endingTracks(playList.currentTracks)
     }
 
+    private fun endingTracks(count: Int): String {
+        return when (count % 10) {
+            1 -> view.context.getString(R.string.trek)
+            in 2..4 -> view.context.getString(R.string.treka)
+            else -> view.context.getString(R.string.trekov)
+        }
+    }
 }

@@ -24,25 +24,22 @@ class SearchViewModel(
 
     private var latestSearchText: String? = null
     private var searchJob: Job? = null
+    private var historyJob: Job? = null
 
     private val _clearHistory = MutableLiveData<Unit>()
     val clearHistory: LiveData<Unit> = _clearHistory
 
-    fun addHistoryTracks(tracksHistory: ArrayList<Track>) {
-        interactorHistory.addHistoryTracks(tracksHistory)
+    fun saveTrack(track: Track) {
+        interactorHistory.saveTrack(track)
     }
 
-    fun addHistoryList(tracksHistory: ArrayList<Track>) {
-        interactorHistory.editHistoryList(tracksHistory)
+    fun clearTrackListHistory() {
+        interactorHistory.clearTrack()
+        renderState(TrackState.SearchHistory(emptyList()))
     }
 
-    fun clearTrackListHistory(tracksHistory: ArrayList<Track>) {
-        _clearHistory.value = interactorHistory.clearTrack(tracksHistory)
-    }
+    private fun getHistoryTrack() = interactorHistory.getAllTrack()
 
-    fun addHistoryTrack(track: Track) {
-        interactorHistory.addTrackInAdapter(track)
-    }
 
     private val stateLiveData = MutableLiveData<TrackState>()
 
@@ -52,22 +49,24 @@ class SearchViewModel(
         stateLiveData.postValue(state)
     }
 
-//    override fun onCleared() {
-//        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-//    }
-
     fun searchDebounce(changedText: String) {
-        if (latestSearchText == changedText) {
-            return
+        if (changedText.isBlank()) {
+            historyJob = viewModelScope.launch {
+                stateLiveData.value = TrackState.SearchHistory(getHistoryTrack())
+            }
+            searchJob?.cancel()
+        } else {
+            this.latestSearchText = changedText
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                delay(SEARCH_DEBOUNCE_DELAY)
+                searchRequest(changedText)
+            }
         }
+    }
 
-        latestSearchText = changedText
-
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
-            searchRequest(changedText)
-        }
+    fun clear() {
+        renderState(TrackState.Default)
     }
 
     fun searchRequest(newSearchText: String) {

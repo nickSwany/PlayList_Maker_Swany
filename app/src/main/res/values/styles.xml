@@ -160,4 +160,8 @@
     <style name="bottom_sheet">
         <item name="android:background">@drawable/bottom_sheet</item>
     </style>
+
+    <style name="backGround_for_cardView">
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
 </resources>

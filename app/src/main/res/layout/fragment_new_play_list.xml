@@ -61,11 +61,12 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_new_playList"
+                style="@style/backGround_for_cardView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="24dp"
+                android:layout_marginTop="@dimen/radius_8"
                 android:layout_marginEnd="24dp"
-                android:background="@null"
                 android:outlineAmbientShadowColor="@color/white"
                 android:outlineSpotShadowColor="@color/white"
                 app:cardCornerRadius="8dp"
@@ -78,8 +79,9 @@
                     android:id="@+id/album_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
+
                     android:src="@drawable/add_photo_for_play_list"
+                    android:scaleType="centerCrop"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

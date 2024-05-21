@@ -5,8 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "tracks_playlist"
-    , primaryKeys = ["trackId", "playListId"],
+    tableName = "tracks_playlist", primaryKeys = ["trackId", "playListId"],
     foreignKeys = [
         ForeignKey(
             entity = TrackPlayListEntity::class,

@@ -15,4 +15,7 @@ interface PlayListRepository {
     suspend fun getPlayList(id: Int): PlayList
 
     suspend fun updatePlayList(name: String, description: String, uri: String, id: Int)
+    suspend fun getTracksForPlayList(playList: Int): Flow<List<Track>>
+
+    suspend fun getTrackForPlayListCount(playList: PlayList): Int
 }

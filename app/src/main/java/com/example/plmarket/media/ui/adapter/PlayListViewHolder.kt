@@ -1,5 +1,9 @@
 package com.example.plmarket.media.ui.adapter
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.media.ExifInterface
+import android.util.TypedValue
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,17 +16,38 @@ class PlayListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = PlayListItemBinding.bind(view)
 
-    fun bind(playList: PlayList) = with(binding) {
+    private fun dpToPx(dp: Float, context: Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            context.resources.displayMetrics
+        ).toInt()
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun bind(playList: PlayList) {
         val cornerSize = itemView.resources.getDimensionPixelSize(R.dimen.radius_8)
+        binding.apply {
+            Glide.with(itemView)
+                .load(playList.uri)
+//            .fitCenter()
+                .centerCrop()
+                .placeholder(R.drawable.placholder_for_play_list)
+                .transform(RoundedCorners(dpToPx(8f, itemView.context)))
+                .into(imagePlayList)
 
-        Glide.with(itemView)
-            .load(playList.uri)
-            .centerCrop()
-            .placeholder(R.drawable.placholder_for_play_list)
-            .transform(RoundedCorners(cornerSize))
-            .into(imagePlayList)
 
-        namePlayList.text = playList.name
-        currentTracks.text = playList.currentTracks.toString()
+            namePlayList.text = playList.name
+            currentTracks.text =
+                playList.currentTracks.toString() + " " + endingTracks(playList.currentTracks)
+        }
+    }
+
+    private fun endingTracks(count: Int): String {
+        return when (count % 10) {
+            1 -> view.context.getString(R.string.trek)
+            in 2..4 -> view.context.getString(R.string.treka)
+            else -> view.context.getString(R.string.trekov)
+        }
     }
 }

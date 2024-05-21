@@ -35,4 +35,7 @@ interface PlayListDao {
 
     @Query("SELECT count(playListId) > 0 FROM tracks_playlist WHERE trackId =:trackId AND playListId =:playlistId")
     suspend fun doesTrackExistsPlayList(trackId: String, playlistId: Int): Boolean
+
+    @Query("SELECT * FROM playlist_for_tracks INNER JOIN tracks_playlist ON playlist_for_tracks.trackId == tracks_playlist.trackId WHERE tracks_playlist.playListId == :playListId")
+    suspend fun getTracksByPlayList(playListId: Int): List<TrackPlayListEntity>
 }
