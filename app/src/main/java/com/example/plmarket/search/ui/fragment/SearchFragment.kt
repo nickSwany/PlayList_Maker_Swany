@@ -47,7 +47,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     val binding get() = _binding!!
     private var searchText: String = ""
-
+    private var previousSearchText: String? = null
 
     private val viewModel: SearchViewModel by viewModel()
 
@@ -86,10 +86,11 @@ class SearchFragment : Fragment() {
         binding.apply {
             cleanHistory.setOnClickListener {
                 viewModel.clearTrackListHistory()
-                binding.LLSearchHistory.isVisible = false
+                LLSearchHistory.isVisible = false
                 historyAdapter.notifyDataSetChanged()
             }
         }
+
         viewModel.clearHistory.observe(viewLifecycleOwner) {
             binding.LLSearchHistory.isVisible = false
             historyAdapter.notifyDataSetChanged()
@@ -108,10 +109,8 @@ class SearchFragment : Fragment() {
                 LLSearchHistory.isVisible =
                     hasFocus && searchEdittext.text.isEmpty() &&
                             historyAdapter.trackListHistory.isNotEmpty()
-
             }
         }
-
 
         binding.RestartSearch.setOnClickListener {
             binding.massageNotInternet.isVisible = false
@@ -119,19 +118,39 @@ class SearchFragment : Fragment() {
         }
 
         val simpleTextWatcher = object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+                //empty
+            }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //empty
+            }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clean.isVisible = clearButtonVisibility(s)
                 viewModel.searchDebounce(
-                    changedText = s?.toString() ?: " "
+                    changedText = s?.toString() ?: ""
                 )
             }
         }
 
         binding.searchEdittext.addTextChangedListener(simpleTextWatcher)
+
+        binding.LLSearchHistory.isVisible = false
+        binding.youSearch.isVisible = false
+        binding.cleanHistory.isVisible = false
+
+        if (savedInstanceState != null) {
+            searchText = savedInstanceState.getString(SEARCH_TEXT, "")
+            val savedTracks = savedInstanceState.getParcelableArrayList<Track>(TRACK_TEXT)
+            if (searchText.isNotEmpty() && savedTracks != null) {
+                searchAdapter.trackList.addAll(savedTracks)
+                showContent(searchAdapter.trackList)
+                binding.searchEdittext.setText(searchText)
+            } else {
+                showDefault()
+            }
+        }
     }
 
     private fun render(state: TrackState) {
@@ -192,6 +211,7 @@ class SearchFragment : Fragment() {
         searchAdapter.trackList.clear()
         searchAdapter.trackList.addAll(track)
         hideKeyboard()
+        searchAdapter.notifyDataSetChanged()
     }
 
     private fun showSearchHistory(track: List<Track>) {
@@ -217,9 +237,14 @@ class SearchFragment : Fragment() {
             massageNotInternet.isVisible = false
             messageNotFound.isVisible = false
             LLSearchHistory.isVisible = false
+            youSearch.isVisible = false
+            cleanHistory.isVisible = false
+            rcViewHistory.isVisible = false
             searchAdapter.trackList.clear()
             if (historyAdapter.trackListHistory.isNotEmpty()) {
                 LLSearchHistory.isVisible = true
+                youSearch.isVisible = true
+                cleanHistory.isVisible = true
             }
             historyAdapter.notifyDataSetChanged()
         }
@@ -253,17 +278,21 @@ class SearchFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_TEXT, searchText)
-        outState.putParcelableArrayList(TRACK_TEXT, searchAdapter.trackList)
+        outState.putParcelableArrayList(TRACK_TEXT, ArrayList(searchAdapter.trackList))
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.searchEdittext.setText(savedInstanceState?.getString(SEARCH_TEXT, ""))
         val trackSave = savedInstanceState?.getParcelableArrayList<Track>(TRACK_TEXT)
+        if (!trackSave.isNullOrEmpty()) {
+            searchAdapter.trackList.addAll(trackSave)
+            showContent(trackSave)
+        }
     }
 
     private fun init() {
-
         binding.apply {
             rcViewHistory.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -272,6 +301,19 @@ class SearchFragment : Fragment() {
             RCSearchHistory.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             RCSearchHistory.adapter = historyAdapter
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val currentSearchText = binding.searchEdittext.text.toString()
+
+        if (currentSearchText.isBlank()) {
+            showDefault()
+        } else if (currentSearchText != searchText) {
+            viewModel.searchRequest(currentSearchText)
+        } else {
+            showContent(searchAdapter.trackList)
         }
     }
 

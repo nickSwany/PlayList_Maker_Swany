@@ -71,7 +71,6 @@ class SearchViewModel(
 
     fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
-
             renderState(TrackState.Loading)
 
             viewModelScope.launch {
