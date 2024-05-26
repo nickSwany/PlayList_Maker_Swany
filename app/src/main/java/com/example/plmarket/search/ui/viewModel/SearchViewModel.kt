@@ -40,7 +40,6 @@ class SearchViewModel(
 
     private fun getHistoryTrack() = interactorHistory.getAllTrack()
 
-
     private val stateLiveData = MutableLiveData<TrackState>()
 
     fun observeState(): LiveData<TrackState> = stateLiveData
@@ -56,7 +55,10 @@ class SearchViewModel(
             }
             searchJob?.cancel()
         } else {
-            this.latestSearchText = changedText
+            if (latestSearchText == changedText) {
+                return
+            }
+            latestSearchText = changedText
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
                 delay(SEARCH_DEBOUNCE_DELAY)

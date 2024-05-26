@@ -67,6 +67,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="@dimen/radius_8"
                 android:layout_marginEnd="24dp"
+                app:cardElevation="0dp"
                 android:outlineAmbientShadowColor="@color/white"
                 android:outlineSpotShadowColor="@color/white"
                 app:cardCornerRadius="8dp"
