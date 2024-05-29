@@ -11,8 +11,11 @@
         android:label="fragment_mediateca"
         tools:layout="@layout/fragment_mediateca" >
         <action
-            android:id="@+id/action_mediaFragment_to_playerActivity"
-            app:destination="@id/playerActivity" />
+            android:id="@+id/action_mediaFragment_to_fragmentNewPlayList"
+            app:destination="@id/fragmentNewPlayList" />
+        <action
+            android:id="@+id/action_mediaFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -20,22 +23,26 @@
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_searchFragment_to_playerActivity"
-            app:destination="@id/playerActivity" />
+            android:id="@+id/action_searchFragment_to_playerFragment2"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.plmarket.settings.ui.fragment.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
-    <activity
-        android:id="@+id/playerActivity"
-        android:name="com.example.plmarket.player.ui.activity.PlayerActivity"
-        android:label="activity_player"
-        tools:layout="@layout/activity_player" />
     <fragment
-        android:id="@+id/selectedTracksFragment"
-        android:name="com.example.plmarket.media.ui.fragment.SelectedTracksFragment"
-        android:label="fragment_selected_tracks"
-        tools:layout="@layout/fragment_selected_tracks" />
+        android:id="@+id/fragmentNewPlayList"
+        android:name="com.example.plmarket.media.ui.fragment.NewPlayListFragment"
+        android:label="fragment_new_play_list"
+        tools:layout="@layout/fragment_new_play_list" />
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.example.plmarket.player.ui.fragment.PlayerFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_player" >
+        <action
+            android:id="@+id/action_playerFragment_to_fragmentNewPlayList"
+            app:destination="@id/fragmentNewPlayList" />
+    </fragment>
 </navigation>

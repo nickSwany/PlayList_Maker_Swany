@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.plmarket.player.domain.models.Track
 import java.text.SimpleDateFormat
-import com.bumptech.glide.request.RequestOptions
 import com.example.pl_market.R
 import com.example.pl_market.databinding.CardItemBinding
 import java.util.*

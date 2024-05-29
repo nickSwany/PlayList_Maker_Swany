@@ -108,8 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible"
-            >
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/you_search"
@@ -135,7 +134,8 @@
 
             <Button
                 android:id="@+id/clean_history"
-                style="@style/delete_history" />
+                style="@style/delete_history"
+                android:visibility="visible"/>
 
         </LinearLayout>
 

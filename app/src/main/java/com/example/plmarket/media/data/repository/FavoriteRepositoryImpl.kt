@@ -1,9 +1,10 @@
-package com.example.plmarket.media.data
+package com.example.plmarket.media.data.repository
 
 
+import com.example.plmarket.media.data.TrackDbConvertor
 import com.example.plmarket.media.data.db.AppDatabase
 import com.example.plmarket.media.data.db.entity.TrackEntity
-import com.example.plmarket.media.data.repository.FavoriteRepository
+import com.example.plmarket.media.domain.repository.FavoriteRepository
 import com.example.plmarket.media.domain.FavoriteListener
 import com.example.plmarket.player.domain.models.Track
 import kotlinx.coroutines.flow.Flow

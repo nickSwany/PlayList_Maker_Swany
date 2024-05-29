@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.example.plmarket.player.domain.models.Track
 import com.example.plmarket.search.data.SearchHistory
+import com.example.plmarket.search.data.SearchHistory.Companion.MAX_HISTORY_TRACK
 import com.example.plmarket.search.domain.SharedPreferensecHistory
 import com.google.gson.Gson
 
@@ -15,7 +16,7 @@ const val KEY_HISTORY_ALL = "key_history_all"
 
 class SharedPreferensecHistoryImpl(private val context: Context) : SharedPreferensecHistory {
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var searchHistory: SearchHistory
+    private var trackHistory = mutableListOf<Track>()
 
     private fun getSharedPreferences() {
         sharedPreferences = context.getSharedPreferences(
@@ -23,30 +24,45 @@ class SharedPreferensecHistoryImpl(private val context: Context) : SharedPrefere
         )
     }
 
-    override fun addTrackInAdapter(track: Track) {
-        getSharedPreferences()
-        val json = Gson().toJson(track)
-        sharedPreferences.edit().putString(KEY_HISTORY, json).apply()
+    override fun saveTrack(track: Track) {
+        addHistoryTrack(track)
     }
 
-    override fun addHistoryTracks(tracksHistory: ArrayList<Track>) {
-        getSharedPreferences()
-
-        searchHistory = SearchHistory(sharedPreferences)
-
-        searchHistory.addTrack(tracksHistory)
-
-        sharedPreferences.registerOnSharedPreferenceChangeListener(searchHistory.listener)
+    private fun addHistoryTrack(newTrack: Track) {
+        trackHistory = read()
+        if (trackHistory.contains(newTrack)) trackHistory.remove(newTrack)
+        if (trackHistory.size == MAX_HISTORY_TRACK) {
+            trackHistory.removeLast()
+        }
+        trackHistory.add(0, newTrack)
+        writeHistoryToJson(trackHistory)
     }
 
-    override fun editHistoryList(tracksHistory: ArrayList<Track>) {
+    private fun writeHistoryToJson(searchTrackHistory: List<Track>) {
+        val json = Gson().toJson(searchTrackHistory)
+        sharedPreferences.edit().putString(KEY_HISTORY_ALL, json).apply()
+    }
+
+    override fun getAllTrack(): List<Track> {
+        getSharedPreferences()
+        trackHistory = read()
+        return trackHistory
+    }
+
+    override fun clearTrack() {
         sharedPreferences.edit()
-            .putString(KEY_HISTORY_ALL, Gson().toJson(tracksHistory))
+            .clear()
             .apply()
+        trackHistory.clear()
     }
 
-    override fun clearTrack(tracksHistory: ArrayList<Track>) {
-        sharedPreferences.edit().clear().apply()
-        tracksHistory.clear()
+    override fun editHistoryList() {
+        sharedPreferences.edit()
+            .putString(KEY_HISTORY_ALL, Gson().toJson(trackHistory))
+    }
+
+    private fun read(): MutableList<Track> {
+        val json = sharedPreferences.getString(KEY_HISTORY_ALL, null) ?: return mutableListOf()
+        return Gson().fromJson(json, Array<Track>::class.java).toMutableList()
     }
 }

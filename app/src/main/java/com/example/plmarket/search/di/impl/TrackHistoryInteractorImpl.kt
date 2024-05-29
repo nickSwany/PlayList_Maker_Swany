@@ -6,20 +6,19 @@ import com.example.plmarket.search.domain.TrackHistoryInteractor
 
 class TrackHistoryInteractorImpl(private val sharedHistory: SharedPreferensecHistory) :
     TrackHistoryInteractor {
-    override fun addHistoryTracks(tracksHistory: ArrayList<Track>) {
-        sharedHistory.addHistoryTracks(tracksHistory)
-    }
-
-    override fun addTrackInAdapter(track: Track) {
-        sharedHistory.addTrackInAdapter(track)
-
-    }
 
     override fun editHistoryList(tracksHistory: ArrayList<Track>) {
-        sharedHistory.editHistoryList(tracksHistory)
+        sharedHistory.editHistoryList()
+    }
+    override fun clearTrack() {
+    sharedHistory.clearTrack()
     }
 
-    override fun clearTrack(tracksHistory: ArrayList<Track>) {
-        sharedHistory.clearTrack(tracksHistory)
+    override fun getAllTrack(): List<Track> {
+        return sharedHistory.getAllTrack()
+    }
+
+    override fun saveTrack(track: Track) {
+        sharedHistory.saveTrack(track)
     }
 }
