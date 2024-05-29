@@ -1,6 +1,7 @@
 package com.example.plmarket.media.data.repository
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.example.plmarket.media.data.PlayListConvertor
 import com.example.plmarket.media.data.db.AppDatabase
@@ -12,10 +13,13 @@ import com.example.plmarket.media.domain.repository.PlayListRepository
 import com.example.plmarket.player.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PlayListRepositoryImpl(
     private val database: AppDatabase,
     private val playListConvertor: PlayListConvertor,
+    private val context: Context
 ) : PlayListRepository {
 
     override fun getPlayList(): Flow<List<PlayList>> = flow {
@@ -84,6 +88,7 @@ class PlayListRepositoryImpl(
 
         return playListConvertor.map(playList)
     }
+
     override suspend fun getTracksForPlayList(playList: Int): Flow<List<Track>> = flow {
         val tracks = database.playListDao().getTracksByPlayList(playList)
         emit(trackConvectorTracks(tracks))
@@ -93,7 +98,61 @@ class PlayListRepositoryImpl(
         return database.playListDao().getTracksByPlayList(playList.playListId).size
     }
 
+    override suspend fun deletePlayList(playListId: Int): Boolean {
+        val tracks = trackConvectorTracks(database.playListDao().getTracksByPlayList(playListId))
+        database.playListDao().deletePlayList(playListId)
+        database.playListDao().deletePlayListJoinTable(playListId)
+        for (track in tracks) {
+            if (!database.playListDao().doesTrackPlayList(track.trackId)) {
+                database.playListDao().deleteTrackPlayList(track.trackId)
+            }
+        }
+        return true
+    }
+
+    override suspend fun deleteTrackPlayList(trackId: String, playListId: Int): Boolean {
+        if (!database.playListDao().doesTrackExistsPlayList(trackId, playListId)) {
+            database.playListDao().deleteTrackPlayList(trackId)
+        }
+        database.playListDao().deleteTrackPlayListJoinTable(trackId, playListId)
+        return true
+    }
+
+    override fun sharePlayList(
+        tracks: List<Track>,
+        nameTrack: String,
+        description: String,
+        currentTrack: String
+    ) {
+        var listTrack = ""
+        var count = 1
+        for (track in tracks) {
+            val timeTrack =
+                SimpleDateFormat(
+                    "mm:ss",
+                    Locale.getDefault()
+                ).format(track.trackTimeMillis?.toInt())
+            listTrack += "$count. ${track.artistName} - ${track.trackName} (${timeTrack})"
+            count++
+        }
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plsin"
+            putExtra(
+                Intent.EXTRA_TEXT, """
+                $nameTrack
+                $description
+                $currentTrack
+            """.trimIndent() + listTrack
+            ) // или листр трек нужно вынести
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            Intent.createChooser(this, null)
+        }
+        context.startActivity(intent, null)
+    }
+
     private fun trackConvectorTracks(tracks: List<TrackPlayListEntity>): List<Track> {
         return tracks.map { tracks -> playListConvertor.map(tracks) }
     }
+
+
 }

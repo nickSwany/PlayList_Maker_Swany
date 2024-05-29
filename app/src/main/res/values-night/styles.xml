@@ -148,4 +148,7 @@
     <style name="backGround_for_cardView">
         <item name="cardBackgroundColor">@color/dark_theme</item>
     </style>
+    <style name="gray_to_white">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

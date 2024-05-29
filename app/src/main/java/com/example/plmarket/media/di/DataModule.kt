@@ -31,7 +31,7 @@ val repositoryMediaModule = module {
     }
 
     single<PlayListRepository>{
-        PlayListRepositoryImpl(get(), get())
+        PlayListRepositoryImpl(get(), get(), get())
     }
 }
 

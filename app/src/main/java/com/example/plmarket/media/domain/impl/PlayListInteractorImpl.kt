@@ -40,4 +40,29 @@ class PlayListInteractorImpl(
     override fun getUri(uriPlayList: String): String {
         return albumPictureRepository.getUri(uriPlayList)
     }
+
+    override suspend fun deletePlayList(playListId: Int): Boolean {
+        return playListRepository.deletePlayList(playListId)
+    }
+
+    override suspend fun deleteTrackPlayList(trackId: String, playListId: Int): Boolean {
+        return playListRepository.deleteTrackPlayList(trackId, playListId)
+    }
+
+    override suspend fun getTrackForPlayList(playListId: Int): Flow<List<Track>> {
+        return playListRepository.getTracksForPlayList(playListId)
+    }
+
+    override suspend fun getTrackForPlayListCount(playList: PlayList): Int {
+        return playListRepository.getTrackForPlayListCount(playList)
+    }
+
+    override fun sharePlayList(
+        tracks: List<Track>,
+        nameTrack: String,
+        description: String,
+        currentTrack: String
+    ) {
+        playListRepository.sharePlayList(tracks, nameTrack, description, currentTrack)
+    }
 }

@@ -38,4 +38,19 @@ interface PlayListDao {
 
     @Query("SELECT * FROM playlist_for_tracks INNER JOIN tracks_playlist ON playlist_for_tracks.trackId == tracks_playlist.trackId WHERE tracks_playlist.playListId == :playListId")
     suspend fun getTracksByPlayList(playListId: Int): List<TrackPlayListEntity>
+
+    @Query("DELETE FROM playlist_for_tracks WHERE trackId is :id")
+    suspend fun deleteTrackPlayList(id: String)
+
+    @Query("DELETE FROM tracks_playlist WHERE trackId = :id AND playListId = :idPlaylist")
+    suspend fun deleteTrackPlayListJoinTable(id: String, idPlaylist: Int)
+
+    @Query("DELETE FROM playlist WHERE playListId = :idPlaylist")
+    suspend fun deletePlayList(idPlaylist: Int)
+
+    @Query("DELETE FROM tracks_playlist WHERE playlistId = :idPlaylist")
+    suspend fun deletePlayListJoinTable(idPlaylist: Int)
+
+    @Query("SELECT count(playlistId) > 0 FROM tracks_playlist WHERE trackId =:trackId")
+    suspend fun doesTrackPlayList(trackId: String): Boolean
 }

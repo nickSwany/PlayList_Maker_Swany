@@ -1,5 +1,6 @@
 package com.example.plmarket.search.ui.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -74,6 +75,7 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -147,6 +149,7 @@ class SearchFragment : Fragment() {
                 searchAdapter.trackList.addAll(savedTracks)
                 showContent(searchAdapter.trackList)
                 binding.searchEdittext.setText(searchText)
+                previousSearchText = binding.searchEdittext.text.toString()
             } else {
                 showDefault()
             }
@@ -196,6 +199,7 @@ class SearchFragment : Fragment() {
         hideKeyboard()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showContent(track: List<Track>) {
         binding.apply {
             RCSearchHistory.isVisible = false
@@ -214,6 +218,7 @@ class SearchFragment : Fragment() {
         searchAdapter.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showSearchHistory(track: List<Track>) {
         binding.apply {
             historyAdapter.trackListHistory.clear()
@@ -228,6 +233,7 @@ class SearchFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showDefault() {
         binding.apply {
             searchEdittext.setText("")

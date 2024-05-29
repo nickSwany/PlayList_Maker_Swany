@@ -197,7 +197,7 @@ class NewPlayListFragment : Fragment() {
                                 otherEditText.defaultHintTextColor =
                                     AppCompatResources.getColorStateList(
                                         requireContext(),
-                                        R.color.black
+                                        R.color.dark_and_white
                                     )
                             }
                     }
@@ -236,6 +236,8 @@ class NewPlayListFragment : Fragment() {
 
     private fun createPlayList(playList: PlayList) {
         binding.apply {
+            binding.newPlayList.text = getString(R.string.edit)
+            binding.btAddPlayList.text = getString(R.string.save)
             edTextNamePlaylistInput.setText(playList.name)
             edTextDescriptionInput.setText(playList.description)
             edTextNamePlaylistInput.requestFocus()

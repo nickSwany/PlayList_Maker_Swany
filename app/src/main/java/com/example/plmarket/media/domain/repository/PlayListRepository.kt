@@ -18,4 +18,9 @@ interface PlayListRepository {
     suspend fun getTracksForPlayList(playList: Int): Flow<List<Track>>
 
     suspend fun getTrackForPlayListCount(playList: PlayList): Int
+    suspend fun deletePlayList(playListId:Int) : Boolean
+
+    suspend fun deleteTrackPlayList(trackId: String, playListId: Int) : Boolean
+
+    fun sharePlayList(tracks: List<Track>, nameTrack: String, description: String, currentTrack: String)
 }
