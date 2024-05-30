@@ -1,7 +1,6 @@
 package com.example.plmarket.media.ui.fragment
 
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -113,7 +112,7 @@ class PlayListReviewFragment : Fragment(), TrackPlayListLongClickListener {
 
         viewModel.observeStateTrackReview().observe(this) {
             when (it) {
-                is PlayListStateTrack.Empty -> ""
+                is PlayListStateTrack.Empty -> showEmpty()
                 is PlayListStateTrack.Content -> showContent(it.tracks)
             }
         }
@@ -130,9 +129,11 @@ class PlayListReviewFragment : Fragment(), TrackPlayListLongClickListener {
             .setPositiveButton("Да") { dialog, which ->
                 viewModel.deleteTrackInPlayList(trackIdPlayList, idPlaylist)
             }
+
         viewModel.observeStateDeleteTrack().observe(this) {
             if (it) viewModel.fillDataTracks(idPlaylist)
         }
+
         binding.apply {
             imgMenu.setOnClickListener {
                 tvNamePlayLisSettings.text = tvNamePlayList.text
@@ -240,6 +241,7 @@ class PlayListReviewFragment : Fragment(), TrackPlayListLongClickListener {
     }
 
     private fun showContent(tracks: List<Track>) {
+        binding.rvTracks.isVisible = true
         var timeSec = 0
         for (track in tracks) {
             timeSec += track.trackTimeMillis?.toInt() ?: 0
@@ -254,6 +256,17 @@ class PlayListReviewFragment : Fragment(), TrackPlayListLongClickListener {
         binding.sumTrack.text = duration
         binding.curruntTrack.text = currentTrack
         adapter.notifyDataSetChanged()
+    }
+
+    private fun showEmpty() {
+        binding.rvTracks.isVisible = false
+        Toast.makeText(
+            context,
+            "В этом плейлисте нет треков.",
+            Toast.LENGTH_SHORT
+        ).show()
+        binding.sumTrack.text = getString(R.string.zero_minut)
+        binding.curruntTrack.text = getString(R.string.zero_trecks)
     }
 
     private fun endingTracks(count: Int): String {

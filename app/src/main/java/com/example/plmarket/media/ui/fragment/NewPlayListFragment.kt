@@ -246,7 +246,7 @@ class NewPlayListFragment : Fragment() {
             uriPlayList = playList.uri.toString().substringAfterLast("/")
 
             Glide.with(binding.root)
-                .load(uriPlayList)
+                .load(playList.uri)
                 .centerCrop()
                 .placeholder(R.drawable.error_paint_internet)
                 .into(albumImage)
