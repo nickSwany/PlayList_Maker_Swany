@@ -46,6 +46,13 @@
     <string name="trek">трек</string>
     <string name="treka">трека</string>
     <string name="trekov">треков</string>
+    <string name="minut">минут</string>
+    <string name="minuta">минута</string>
+    <string name="minutes">минуты</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
+    <string name="zero_minut">0 минут</string>
+    <string name="zero_trecks">0 треков</string>
 
 
 </resources>

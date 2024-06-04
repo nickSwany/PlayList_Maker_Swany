@@ -54,8 +54,8 @@ class PlayerFragment : Fragment() {
             artworkUrl100: String?,
             collectionName: String?,
             releaseDate: String?,
-            primaryGenreName: String?,
             country: String?,
+            primaryGenreName: String?,
             previewUrl: String?,
             isFavorite: Boolean,
             track: Track
@@ -67,8 +67,8 @@ class PlayerFragment : Fragment() {
             EXTRA_ART_TRACK to artworkUrl100,
             EXTRA_COllECTION_NAME to collectionName,
             EXTRA_YEAR to releaseDate,
-            EXTRA_GENRE_NAME to primaryGenreName,
             EXTRA_COUNTRY to country,
+            EXTRA_GENRE_NAME to primaryGenreName,
             EXTRA_SONG to previewUrl,
             EXTRA_LIKE to isFavorite,
             EXTRA_TRACK to track
@@ -118,8 +118,8 @@ class PlayerFragment : Fragment() {
         binding.apply {
             trackName.text = requireArguments().getString(EXTRA_TRACK_NAME)
             groupName.text = requireArguments().getString(EXTRA_ARTIST_NAME)
-            countryText.text = requireArguments().getString(EXTRA_COUNTRY)
             genreText.text = requireArguments().getString(EXTRA_GENRE_NAME)
+            countryText.text = requireArguments().getString(EXTRA_COUNTRY)
             isLiked = requireArguments().getBoolean(EXTRA_LIKE, false)
             yearNumber.text = getYearFromDatString(requireArguments().getString(EXTRA_YEAR) ?: "")
             timeLeft.text = DEFAULT_TIME_LEFT
@@ -161,7 +161,7 @@ class PlayerFragment : Fragment() {
         val data = requireArguments().getString(EXTRA_YEAR).toString()
         viewModel.correctDataSong(data)
         viewModel.dataSong.observe(this) {
-            binding.year.text = it
+            binding.yearNumber.text = it
         }
 
 

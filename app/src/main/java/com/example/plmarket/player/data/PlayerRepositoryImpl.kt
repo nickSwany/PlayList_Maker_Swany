@@ -10,14 +10,12 @@ import java.util.*
 class PlayerRepositoryImpl : PlayerRepository {
     companion object {
         private const val DEFAULT_TIME_LEFT = "00:00"
-        private const val DELAY = 1000L
     }
 
     private var listener: PlayerListener? = null
     private var playerState = StatePlayer.STATE_DEFAULT
     private var time = DEFAULT_TIME_LEFT
 
-    //    val handler = Handler(Looper.getMainLooper())
     private val mediaPlayer = MediaPlayer()
 
     override fun preparePlayer(url: String) {
@@ -62,7 +60,6 @@ class PlayerRepositoryImpl : PlayerRepository {
     override fun startPlayer() {
         playerState = StatePlayer.STATE_PLAYING
         mediaPlayer.start()
-//        updateTime(time)
         listener?.onStateUpdate(playerState)
     }
 
@@ -72,28 +69,6 @@ class PlayerRepositoryImpl : PlayerRepository {
         listener?.onStateUpdate(playerState)
     }
 
-//    override fun updateTime(time: String) {
-//        this.time = time
-//
-//        handler.postDelayed(
-//            object : Runnable {
-//                override fun run() {
-//                    if (playerState == StatePlayer.STATE_PLAYING) {
-//                        this@PlayerRepositoryImpl.time = SimpleDateFormat(
-//                            "mm:ss",
-//                            Locale.getDefault()
-//                        ).format(mediaPlayer.currentPosition)
-//                        listener?.onTimeUpdate(this@PlayerRepositoryImpl.time)
-//                        handler.postDelayed(
-//                            this,
-//                            DELAY,
-//                        )
-//                    }
-//                }
-//            },
-//            DELAY
-//        )
-//    }
 
     override fun setupListener(listener: PlayerListener) {
         this.listener = listener

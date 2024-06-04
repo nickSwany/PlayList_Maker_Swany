@@ -30,7 +30,7 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.fragmentNewPlayList, R.id.playerFragment -> {
+                R.id.fragmentNewPlayList, R.id.playerFragment, R.id.playListReviewFragment -> {
                     binding.bottomNavigationView.isVisible =
                         false
                 }

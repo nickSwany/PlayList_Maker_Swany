@@ -26,11 +26,9 @@ class PlayListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
     @SuppressLint("SetTextI18n")
     fun bind(playList: PlayList) {
-        val cornerSize = itemView.resources.getDimensionPixelSize(R.dimen.radius_8)
         binding.apply {
             Glide.with(itemView)
                 .load(playList.uri)
-//            .fitCenter()
                 .centerCrop()
                 .placeholder(R.drawable.placholder_for_play_list)
                 .transform(RoundedCorners(dpToPx(8f, itemView.context)))

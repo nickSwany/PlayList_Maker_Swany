@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pl_market.R
 import com.example.pl_market.databinding.FragmentPlayListBinding
+import com.example.pl_market.databinding.FragmentPlaylistReviewBinding
 import com.example.plmarket.media.domain.module.PlayList
 import com.example.plmarket.media.ui.PlayListState
 import com.example.plmarket.media.ui.adapter.PlayListAdapter
@@ -30,7 +31,16 @@ class PlayListFragment : Fragment() {
 
     private val viewModel: PlayListViewModel by viewModel()
 
-    private val adapter = PlayListAdapter {
+    private val adapter = PlayListAdapter { playList ->
+        findNavController().navigate(
+            R.id.action_mediaFragment_to_playListReviewFragment,
+            PlayListReviewFragment.createArgs(
+                playList.name,
+                playList.description,
+                playList.uri,
+                playList.playListId
+            )
+        )
     }
 
     override fun onCreateView(
@@ -85,6 +95,7 @@ class PlayListFragment : Fragment() {
         binding.apply {
             imgEmptyPlayList.isVisible = false
             tvEmptyPlaList.isVisible = false
+            rcPlayList.isVisible = false
         }
     }
 
@@ -92,6 +103,7 @@ class PlayListFragment : Fragment() {
         binding.apply {
             imgEmptyPlayList.isVisible = true
             tvEmptyPlaList.isVisible = true
+            rcPlayList.isVisible = false
         }
     }
 
