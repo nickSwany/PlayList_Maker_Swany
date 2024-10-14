@@ -3,7 +3,10 @@
 Промежуточный проект "PlayList Maker" позволяет, при помощи API iTunes, искать и прослушщивать треки, просматривать информацию о треке, добавлять их в избранное и при этом позваляет создать, редактировать и делиться собственными плейлистами. В приложение есть настрока смена темы. 
 ## Скриншоты
 <p align="center">
-
+   <img src="https://github.com/nickSwany/PlayList_Maker_Swany/blob/master/app/src/main/res/screenschots/search.jpg?raw=true" alt="screenshot1" width="200"/>
+   <img src="https://github.com/nickSwany/PlayList_Maker_Swany/blob/master/app/src/main/res/screenschots/settings.jpg?raw=true" alt="screenshot1" width="200"/>
+   <img src="https://github.com/nickSwany/PlayList_Maker_Swany/blob/master/app/src/main/res/screenschots/playlist.jpg?raw=true" alt="screenshot1" width="200"/>
+   <img src="https://github.com/nickSwany/PlayList_Maker_Swany/blob/master/app/src/main/res/screenschots/favoriteTracks.jpg?raw=true" alt="screenshot1" width="200"/>
 </p>
 
 ## Технологии и подходы, использованные в проекте
