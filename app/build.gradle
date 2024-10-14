@@ -35,9 +35,7 @@ android {
     viewBinding {
         enabled = true
     }
-    kotlin {
-        jvmToolchain(17)
-    }
+
 }
 
 dependencies {
