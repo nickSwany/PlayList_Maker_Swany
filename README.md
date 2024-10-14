@@ -23,7 +23,18 @@
 - **Koin**: Внедрение зависимостей с помощью Koin для упрощения управления зависимостями.
 
 ## Библиотеки
-Navigation, Fragment KTX, Material Components, Glide, Gson, Retrofit, Room, Kotlin Coroutines, Koin, Lifecycle ViewModel KTX, AppCompat, ConstraintLayout
+- Navigation
+-  Fragment KTX
+-  Material Components
+-  Glide
+-  Gson
+-  Retrofit
+-  Room
+-  Kotlin Coroutines
+-  Koin
+-  Lifecycle ViewModel KTX
+-  AppCompat
+-  ConstraintLayout
 
 ## Требования
 - **IDE**: Android Studio Koala
