@@ -3,8 +3,6 @@ package com.example.plmarket.settings.data
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
 import com.example.pl_market.R
 import com.example.plmarket.settings.domain.SettingsRepository
 
