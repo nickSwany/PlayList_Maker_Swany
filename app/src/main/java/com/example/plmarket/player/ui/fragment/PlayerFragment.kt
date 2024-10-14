@@ -111,7 +111,7 @@ class PlayerFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        viewModel.checkState.observe(this) {
+        viewModel.checkState.observe(viewLifecycleOwner) {
             checkState(it)
         }
 
@@ -146,7 +146,7 @@ class PlayerFragment : Fragment() {
             viewModel.getCoverArtwork(urlImage)
         }
 
-        viewModel.coverArtwork.observe(this) {
+        viewModel.coverArtwork.observe(viewLifecycleOwner) {
             val url = it
 
             val cornerSize = resources.getDimensionPixelSize(R.dimen.radius_8)
@@ -160,7 +160,7 @@ class PlayerFragment : Fragment() {
 
         val data = requireArguments().getString(EXTRA_YEAR).toString()
         viewModel.correctDataSong(data)
-        viewModel.dataSong.observe(this) {
+        viewModel.dataSong.observe(viewLifecycleOwner) {
             binding.yearNumber.text = it
         }
 
@@ -169,7 +169,7 @@ class PlayerFragment : Fragment() {
 
         if (time != null) {
             viewModel.correctTimeSong(time)
-            viewModel.timeSong.observe(this) {
+            viewModel.timeSong.observe(viewLifecycleOwner) {
                 binding.durationTime.text = it
             }
         }
@@ -180,7 +180,7 @@ class PlayerFragment : Fragment() {
             viewModel.checkLike(track.trackId)
         }
 
-        viewModel.secondCounter.observe(this) {
+        viewModel.secondCounter.observe(viewLifecycleOwner) {
             binding.timeLeft.text = it
         }
 
@@ -192,7 +192,7 @@ class PlayerFragment : Fragment() {
             }
         }
 
-        viewModel.likeState.observe(this) { isLiked ->
+        viewModel.likeState.observe(viewLifecycleOwner) { isLiked ->
             if (isLiked) {
                 binding.buttonLike.setImageResource(R.drawable.button_like_true)
                 if (track != null) track.isFavorite = isLiked
@@ -232,7 +232,7 @@ class PlayerFragment : Fragment() {
             }
         })
 
-        viewModel.observeStatePlayList().observe(this) {
+        viewModel.observeStatePlayList().observe(viewLifecycleOwner) {
             checkStatePlayList(it)
         }
 
@@ -250,7 +250,7 @@ class PlayerFragment : Fragment() {
             }
         }
 
-        viewModel.playListState.observe(this) {
+        viewModel.playListState.observe(viewLifecycleOwner) {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED ||
                 bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED ||
                 bottomSheetBehavior.state == BottomSheetBehavior.STATE_DRAGGING ||
@@ -294,7 +294,8 @@ class PlayerFragment : Fragment() {
 
     private fun checkStatePlayList(statePlayList: PlayListState) {
         when (statePlayList) {
-            is PlayListState.Empty -> showEmptyPlayList()
+            is PlayListState.
+            Empty -> showEmptyPlayList()
             is PlayListState.Loading -> showLoadingPlayLst()
             is PlayListState.Content -> showContentPlayList(statePlayList.playList)
         }
